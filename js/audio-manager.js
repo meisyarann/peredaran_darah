@@ -276,6 +276,128 @@ class AudioManager {
     } catch (e) {}
   }
 
+  // --- GAME ARCADE SFX ---
+  playGameCollectSound(isSpecial = false) {
+    if (this.sfxMuted) return;
+    try {
+      const ctx = this.getAudioContext();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = isSpecial ? 'triangle' : 'sine';
+      
+      const startFreq = isSpecial ? 600 : 880;
+      const endFreq = isSpecial ? 1400 : 1320;
+      
+      osc.frequency.setValueAtTime(startFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, now + 0.12);
+
+      gain.gain.setValueAtTime(0.22 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.16);
+    } catch (e) {}
+  }
+
+  playGameHitSound() {
+    if (this.sfxMuted) return;
+    try {
+      const ctx = this.getAudioContext();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(160, now);
+      osc.frequency.exponentialRampToValueAtTime(50, now + 0.2);
+
+      gain.gain.setValueAtTime(0.35 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.23);
+    } catch (e) {}
+  }
+
+  playGamePowerupSound() {
+    if (this.sfxMuted) return;
+    try {
+      const ctx = this.getAudioContext();
+      const now = ctx.currentTime;
+      const freqs = [440, 554, 659, 880, 1108];
+      freqs.forEach((f, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const t = now + i * 0.05;
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, t);
+        gain.gain.setValueAtTime(0.25 * this.volume, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.13);
+      });
+    } catch (e) {}
+  }
+
+  playGameLaserSound() {
+    if (this.sfxMuted) return;
+    try {
+      const ctx = this.getAudioContext();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1200, now);
+      osc.frequency.exponentialRampToValueAtTime(200, now + 0.12);
+
+      gain.gain.setValueAtTime(0.2 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch (e) {}
+  }
+
+  playGameOverSound() {
+    if (this.sfxMuted) return;
+    try {
+      const ctx = this.getAudioContext();
+      const now = ctx.currentTime;
+      const notes = [
+        { f: 440, t: 0.0, d: 0.2 },
+        { f: 415, t: 0.2, d: 0.2 },
+        { f: 392, t: 0.4, d: 0.2 },
+        { f: 349, t: 0.6, d: 0.5 }
+      ];
+      notes.forEach(n => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(n.f, now + n.t);
+        gain.gain.setValueAtTime(0.22 * this.volume, now + n.t);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + n.t + n.d);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + n.t);
+        osc.stop(now + n.t + n.d + 0.05);
+      });
+    } catch (e) {}
+  }
+
+  playGameWinSound() {
+    this.playFanfareSound();
+  }
+
   // 4. BACKGROUND KIDS INSTRUMENTAL BGM (Instrumen Menarik, Ceria & Menyenangkan)
   initBGMAudio() {
     try {

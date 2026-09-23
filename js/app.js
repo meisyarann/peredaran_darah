@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.quizEngine.startQuiz('kecil');
   }
 
+  // Inisialisasi Game Arcade
+  if (window.initHemoArcade) {
+    window.initHemoArcade();
+  }
+
   // Inisialisasi PBL
   if (window.pblManager) {
     window.pblManager.init();
@@ -81,6 +86,17 @@ function initNavigation() {
     if (targetViewId === 'view-quiz' && window.quizEngine) {
       if (!window.quizEngine.container || window.quizEngine.container.children.length === 0) {
         window.quizEngine.startQuiz(window.quizEngine.currentLevel || 'kecil');
+      }
+    }
+
+    // Handle khusus jika masuk / keluar tab Game Arcade
+    if (targetViewId === 'view-game') {
+      if (!window.hemoGame && window.initHemoArcade) {
+        window.initHemoArcade();
+      }
+    } else {
+      if (window.hemoGame && window.hemoGame.state === 'playing') {
+        window.hemoGame.pause();
       }
     }
 

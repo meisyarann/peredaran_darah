@@ -493,11 +493,11 @@ class DashboardManager {
         </div>
 
         <div class="dash-kpi-card card-kpi-3">
-          <div class="kpi-icon-badge">🎖️</div>
+          <div class="kpi-icon-badge">🎮</div>
           <div class="kpi-info">
-            <span class="kpi-label">Lencana Prestasi</span>
-            <h3 class="kpi-value">5 <small>Lencana</small></h3>
-            <span class="kpi-subtext">Dokter Cilik Teladan</span>
+            <span class="kpi-label">Game HemoArcade</span>
+            <h3 class="kpi-value">${parseInt(localStorage.getItem('hemo_game_high_score') || '0', 10)} <small>Poin</small></h3>
+            <span class="kpi-subtext">Pahlawan Sirkulasi Darah</span>
           </div>
         </div>
 
