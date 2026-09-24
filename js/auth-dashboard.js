@@ -149,15 +149,103 @@ class AuthManager {
     }
   }
 
+  loginAsTeacherFromPortal() {
+    if (window.audioMgr) window.audioMgr.playClickSound();
+    const userInput = document.getElementById('portal-teacher-username');
+    const passInput = document.getElementById('portal-teacher-password');
+
+    const username = userInput ? userInput.value : '';
+    const password = passInput ? passInput.value : '';
+
+    const res = this.login(username, password);
+    if (!res.success) {
+      alert(res.message);
+      if (passInput) passInput.focus();
+    }
+  }
+
+  loginAsStudentFromPortal() {
+    if (window.audioMgr) window.audioMgr.playClickSound();
+    const nameInput = document.getElementById('portal-student-name');
+    const classInput = document.getElementById('portal-student-class');
+    const avatarInput = document.getElementById('portal-student-avatar');
+
+    const name = nameInput ? nameInput.value : '';
+    const className = classInput ? classInput.value : 'Kelas VI-A';
+    const avatar = avatarInput ? avatarInput.value : '🎒';
+
+    if (!name || !name.trim()) {
+      alert('Silakan masukkan nama lengkap siswa terlebih dahulu!');
+      if (nameInput) nameInput.focus();
+      return;
+    }
+
+    this.saveStudent(name, className, avatar);
+
+    if (window.navigateTo) {
+      window.navigateTo('view-beranda');
+    }
+  }
+
+  fillPortalTeacherDemo() {
+    if (window.audioMgr) window.audioMgr.playClickSound();
+    const userInput = document.getElementById('portal-teacher-username');
+    const passInput = document.getElementById('portal-teacher-password');
+    if (userInput) userInput.value = this.validCredentials.username;
+    if (passInput) passInput.value = this.validCredentials.password;
+    this.showToast('⚡ Kredensial Guru terisi otomatis!', 'info');
+  }
+
+  togglePortalPasswordVisibility() {
+    const passInput = document.getElementById('portal-teacher-password');
+    if (!passInput) return;
+    passInput.type = passInput.type === 'password' ? 'text' : 'password';
+  }
+
   handleAuthButtonClick() {
     if (this.isLoggedIn()) {
       if (window.navigateTo) window.navigateTo('view-dashboard');
     } else {
-      this.openLoginModal();
+      if (window.navigateTo) window.navigateTo('view-portal');
+      else this.openLoginModal();
     }
   }
 
-  // --- 2. MANAJEMEN DATA SISWA (LANGSUNG NAMA & KELAS) ---
+  // --- 2. MANAJEMEN DATA SISWA (PENDAFTARAN & REKAPITULASI PENILAIAN) ---
+  getDefaultRoster() {
+    return [
+      { id: 'SIS-01', name: 'Meisya Ranny', className: 'Kelas VI-A', avatar: '👩‍🎓', mudah: 100, sedang: 100, sulit: 90, pbl: '3 Kasus Tuntas', pblScore: 100, status: 'Sangat Memuaskan', notes: 'Pemahaman anatomi jantung & sirkulasi sangat tinggi', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 3600000).toISOString(), lastActive: new Date().toISOString() },
+      { id: 'SIS-02', name: 'Ahmad Fauzan', className: 'Kelas VI-A', avatar: '👦', mudah: 90, sedang: 80, sulit: 70, pbl: '2 Kasus Tuntas', pblScore: 85, status: 'Tuntas', notes: 'Perlu latihan rute peredaran darah besar', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 7200000).toISOString(), lastActive: new Date().toISOString() },
+      { id: 'SIS-03', name: 'Siti Rahmawati', className: 'Kelas VI-A', avatar: '👧', mudah: 100, sedang: 90, sulit: 80, pbl: '3 Kasus Tuntas', pblScore: 95, status: 'Sangat Memuaskan', notes: 'Sangat aktif pada simulasi mikroskop virtual', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 10800000).toISOString(), lastActive: new Date().toISOString() },
+      { id: 'SIS-04', name: 'Budi Santoso', className: 'Kelas VI-A', avatar: '👦', mudah: 80, sedang: 70, sulit: 60, pbl: '2 Kasus Tuntas', pblScore: 75, status: 'Tuntas', notes: 'Mampu menjelaskan fungsi hemoglobin dengan baik', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 14400000).toISOString(), lastActive: new Date().toISOString() },
+      { id: 'SIS-05', name: 'Cantika Putri', className: 'Kelas VI-A', avatar: '👧', mudah: 100, sedang: 100, sulit: 100, pbl: '3 Kasus Tuntas', pblScore: 100, status: 'Sempurna ⭐', notes: 'Skor sempurna di semua kuis dan asesmen PBL', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 18000000).toISOString(), lastActive: new Date().toISOString() },
+      { id: 'SIS-06', name: 'Dewi Lestari', className: 'Kelas VI-A', avatar: '👧', mudah: 90, sedang: 80, sulit: 70, pbl: '3 Kasus Tuntas', pblScore: 90, status: 'Tuntas', notes: 'Refleksi studi kasus anemia sangat mendalam', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 21600000).toISOString(), lastActive: new Date().toISOString() },
+      { id: 'SIS-07', name: 'Farhan Pratama', className: 'Kelas VI-B', avatar: '👦', mudah: 70, sedang: 60, sulit: 50, pbl: '1 Kasus Tuntas', pblScore: 65, status: 'Perlu Bimbingan', notes: 'Perlu remedial perbedaan arteri dan vena', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 25200000).toISOString(), lastActive: new Date().toISOString() },
+      { id: 'SIS-08', name: 'Gita Anggraini', className: 'Kelas VI-B', avatar: '👧', mudah: 90, sedang: 90, sulit: 80, pbl: '3 Kasus Tuntas', pblScore: 90, status: 'Tuntas', notes: 'Kalkulator denyut nadi diuji dengan baik', joinedAt: new Date().toISOString(), loginTime: new Date(Date.now() - 28800000).toISOString(), lastActive: new Date().toISOString() }
+    ];
+  }
+
+  getRoster() {
+    try {
+      const data = localStorage.getItem('hemoexplorer_students_roster');
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+      const initial = this.getDefaultRoster();
+      localStorage.setItem('hemoexplorer_students_roster', JSON.stringify(initial));
+      return initial;
+    } catch (e) {
+      return this.getDefaultRoster();
+    }
+  }
+
+  saveRoster(roster) {
+    try {
+      localStorage.setItem('hemoexplorer_students_roster', JSON.stringify(roster));
+    } catch (e) {}
+  }
+
   loadStudent() {
     try {
       const data = localStorage.getItem(this.studentStorageKey);
@@ -174,28 +262,174 @@ class AuthManager {
     }
   }
 
-  saveStudent(name, className) {
+  saveStudent(name, className, avatar = '🎒') {
     if (!name || !name.trim()) return false;
-    const student = {
-      name: name.trim(),
-      className: (className || 'Kelas VI-A').trim(),
-      avatar: '🎒',
-      joinedAt: new Date().toISOString()
+    const cleanName = name.trim();
+    const cleanClass = (className || 'Kelas VI-A').trim();
+    const nowIso = new Date().toISOString();
+
+    const roster = this.getRoster();
+    let student = roster.find(s => s.name.toLowerCase() === cleanName.toLowerCase());
+
+    if (student) {
+      // Perbarui info siswa jika sudah terdaftar
+      student.className = cleanClass;
+      if (avatar) student.avatar = avatar;
+      student.loginTime = nowIso;
+      student.lastActive = nowIso;
+      // Geser siswa aktif ke urutan paling atas
+      roster.splice(roster.indexOf(student), 1);
+      roster.unshift(student);
+    } else {
+      // Daftarkan sebagai siswa baru di Buku Nilai Guru
+      const nextNum = roster.length + 1;
+      const nextId = `SIS-${String(nextNum).padStart(2, '0')}`;
+      student = {
+        id: nextId,
+        name: cleanName,
+        className: cleanClass,
+        avatar: avatar || '🎒',
+        mudah: '-',
+        sedang: '-',
+        sulit: '-',
+        pbl: '0 Kasus',
+        pblScore: 0,
+        status: '🟢 Baru Login (Belum Mengerjakan)',
+        notes: 'Siswa baru login ke sistem',
+        joinedAt: nowIso,
+        loginTime: nowIso,
+        lastActive: nowIso
+      };
+      roster.unshift(student);
+    }
+
+    this.saveRoster(roster);
+
+    const sessionStudent = {
+      id: student.id,
+      name: student.name,
+      className: student.className,
+      avatar: student.avatar || '🎒',
+      loginTime: student.loginTime,
+      joinedAt: student.joinedAt || nowIso
     };
 
-    this.currentStudent = student;
-    localStorage.setItem(this.studentStorageKey, JSON.stringify(student));
+    this.currentStudent = sessionStudent;
+    localStorage.setItem(this.studentStorageKey, JSON.stringify(sessionStudent));
 
     if (window.quizEngine) {
-      window.quizEngine.studentName = student.name;
+      window.quizEngine.studentName = sessionStudent.name;
     }
 
     this.updateUI();
     this.closeStudentModal();
 
+    if (window.updateDashboardStats) window.updateDashboardStats();
+    if (window.dashboardMgr) window.dashboardMgr.renderDashboard();
+
     if (window.audioMgr) window.audioMgr.playCorrectSound();
-    this.showToast(`✨ Selamat datang, ${student.name} (${student.className})! Selamat belajar!`, 'success');
+    this.showToast(`✨ Selamat datang, ${sessionStudent.name} (${sessionStudent.className})! Data penilaianmu telah terhubung ke Buku Nilai Guru.`, 'success');
     return true;
+  }
+
+  // Rekam update nilai asesmen siswa ke Buku Nilai terpusat
+  updateStudentScore(studentNameOrId, updates = {}) {
+    try {
+      const roster = this.getRoster();
+      let targetName = (studentNameOrId || (this.currentStudent ? this.currentStudent.name : 'Meisya Ranny')).trim();
+      let student = roster.find(s => s.name.toLowerCase() === targetName.toLowerCase() || s.id === studentNameOrId);
+
+      if (!student) {
+        const nextId = `SIS-${String(roster.length + 1).padStart(2, '0')}`;
+        student = {
+          id: nextId,
+          name: targetName,
+          className: this.currentStudent ? this.currentStudent.className : 'Kelas VI-A',
+          mudah: '-',
+          sedang: '-',
+          sulit: '-',
+          pbl: '0 Kasus',
+          pblScore: 0,
+          status: 'Sedang Belajar ⏳',
+          notes: 'Mengerjakan asesmen mandiri',
+          joinedAt: new Date().toISOString(),
+          lastActive: new Date().toISOString()
+        };
+        roster.unshift(student);
+      }
+
+      // 1. Update Kuis Berdasarkan Level
+      if (updates.level !== undefined && updates.score !== undefined) {
+        const levelMap = {
+          'mudah': 'mudah',
+          'kecil': 'mudah',
+          'sedang': 'sedang',
+          'besar': 'sedang',
+          'sulit': 'sulit',
+          'gabungan': 'sulit'
+        };
+        const mappedLevel = levelMap[updates.level] || 'mudah';
+        student[mappedLevel] = Number(updates.score);
+      }
+
+      // 2. Update PBL
+      if (updates.pblCount !== undefined || updates.pbl !== undefined) {
+        const count = updates.pblCount !== undefined ? updates.pblCount : (parseInt(updates.pbl) || 1);
+        student.pbl = `${count} Kasus Tuntas`;
+      }
+      if (updates.pblScore !== undefined) {
+        student.pblScore = Number(updates.pblScore);
+      }
+      if (updates.pblRefleksi && updates.pblRefleksi.trim()) {
+        student.notes = `Refleksi: "${updates.pblRefleksi.trim()}"`;
+      }
+
+      // 3. Kalkulasi Otomatis Status Kelulusan
+      const scores = [];
+      if (typeof student.mudah === 'number') scores.push(student.mudah);
+      if (typeof student.sedang === 'number') scores.push(student.sedang);
+      if (typeof student.sulit === 'number') scores.push(student.sulit);
+
+      if (scores.length > 0) {
+        const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+        if (scores.length === 3) {
+          if (avg >= 95) student.status = 'Sempurna ⭐';
+          else if (avg >= 85) student.status = 'Sangat Memuaskan';
+          else if (avg >= 70) student.status = 'Tuntas';
+          else student.status = 'Perlu Bimbingan';
+        } else {
+          student.status = `Tuntas (${scores.length}/3 Kuis)`;
+        }
+
+        if (!updates.pblRefleksi) {
+          if (avg >= 90) student.notes = 'Pemahaman anatomi jantung & sirkulasi darah sangat tinggi';
+          else if (avg >= 75) student.notes = 'Memahami konsep dasar peredaran darah dengan baik';
+          else student.notes = 'Perlu pendalaman materi dan bimbingan guru';
+        }
+      }
+
+      student.lastActive = new Date().toISOString();
+      this.saveRoster(roster);
+
+      // Sinkronkan ke Dashboard Guru
+      if (window.dashboardMgr) {
+        window.dashboardMgr.renderStudentRosterTab();
+      }
+    } catch (e) {
+      console.error('Gagal memperbarui nilai siswa:', e);
+    }
+  }
+
+  deleteStudent(studentId) {
+    if (confirm('Apakah Anda yakin ingin menghapus data siswa ini dari Buku Nilai?')) {
+      let roster = this.getRoster();
+      roster = roster.filter(s => s.id !== studentId);
+      this.saveRoster(roster);
+      if (window.dashboardMgr) {
+        window.dashboardMgr.renderStudentRosterTab();
+      }
+      this.showToast('🗑️ Data siswa berhasil dihapus dari Buku Nilai.', 'info');
+    }
   }
 
   openStudentModal() {
@@ -297,7 +531,7 @@ class AuthManager {
               <p>Kamu sudah siap belajar! Raih skor tertinggi di kuis dan selesaikan tantangan investigasi PBL.</p>
             </div>
             <div class="shortcut-action" style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button class="btn-cta-main" onclick="navigateTo('view-kuis')">
+              <button class="btn-cta-main" onclick="navigateTo('view-quiz')">
                 <span>🏆 Mulai Kuis Prestasi</span>
               </button>
               <button class="btn-cta-secondary" onclick="window.authMgr.openStudentModal()" style="font-size: 0.88rem;">
@@ -359,16 +593,7 @@ class AuthManager {
 class DashboardManager {
   constructor() {
     this.currentTab = 'tab-overview';
-    this.sampleStudents = [
-      { id: 'SIS-01', name: 'Meisya Ranny', mudah: 100, sedang: 100, sulit: 90, pbl: '3 Kasus Tuntas', status: 'Sangat Memuaskan', notes: 'Pemahaman anatomi jantung & sirkulasi sangat tinggi' },
-      { id: 'SIS-02', name: 'Ahmad Fauzan', mudah: 90, sedang: 80, sulit: 70, pbl: '2 Kasus Tuntas', status: 'Tuntas', notes: 'Perlu latihan rute peredaran darah besar' },
-      { id: 'SIS-03', name: 'Siti Rahmawati', mudah: 100, sedang: 90, sulit: 80, pbl: '3 Kasus Tuntas', status: 'Sangat Memuaskan', notes: 'Sangat aktif pada simulasi mikroskop virtual' },
-      { id: 'SIS-04', name: 'Budi Santoso', mudah: 80, sedang: 70, sulit: 60, pbl: '2 Kasus Tuntas', status: 'Tuntas', notes: 'Mampu menjelaskan fungsi hemoglobin dengan baik' },
-      { id: 'SIS-05', name: 'Cantika Putri', mudah: 100, sedang: 100, sulit: 100, pbl: '3 Kasus Tuntas', status: 'Sempurna ⭐', notes: 'Skor sempurna di semua kuis dan asesmen PBL' },
-      { id: 'SIS-06', name: 'Dewi Lestari', mudah: 90, sedang: 80, sulit: 70, pbl: '3 Kasus Tuntas', status: 'Tuntas', notes: 'Refleksi studi kasus anemia sangat mendalam' },
-      { id: 'SIS-07', name: 'Farhan Pratama', mudah: 70, sedang: 60, sulit: 50, pbl: '1 Kasus Tuntas', status: 'Perlu Bimbingan', notes: 'Perlu remedial perbedaan arteri dan vena' },
-      { id: 'SIS-08', name: 'Gita Anggraini', mudah: 90, sedang: 90, sulit: 80, pbl: '3 Kasus Tuntas', status: 'Tuntas', notes: 'Kalkulator denyut nadi diuji dengan baik' }
-    ];
+    this.currentFilter = 'all';
   }
 
   init() {
@@ -386,6 +611,10 @@ class DashboardManager {
     document.querySelectorAll('.dash-tab-pane').forEach(pane => {
       pane.classList.toggle('active', pane.id === tabId);
     });
+
+    if (tabId === 'tab-students') {
+      this.renderStudentRosterTab();
+    }
   }
 
   getQuizProgress() {
@@ -428,19 +657,19 @@ class DashboardManager {
 
     document.getElementById('dash-main-content-wrap')?.style.setProperty('display', 'block');
 
+    const roster = window.authMgr ? window.authMgr.getRoster() : [];
     const quizProg = this.getQuizProgress();
     const pblProg = this.getPblProgress();
 
-    // Hitung rata-rata skor
+    // Hitung rata-rata skor kelas dari data riil
     let totalScore = 0;
     let completedCount = 0;
-    if (quizProg.mudah) { totalScore += Number(quizProg.mudah.score); completedCount++; }
-    if (quizProg.sedang) { totalScore += Number(quizProg.sedang.score); completedCount++; }
-    if (quizProg.sulit) { totalScore += Number(quizProg.sulit.score); completedCount++; }
-    const avgScore = completedCount > 0 ? Math.round(totalScore / completedCount) : 0;
-
-    // Hitung PBL selesai
-    const pblCount = Object.keys(pblProg).length;
+    roster.forEach(s => {
+      if (typeof s.mudah === 'number') { totalScore += s.mudah; completedCount++; }
+      if (typeof s.sedang === 'number') { totalScore += s.sedang; completedCount++; }
+      if (typeof s.sulit === 'number') { totalScore += s.sulit; completedCount++; }
+    });
+    const avgClassScore = completedCount > 0 ? Math.round(totalScore / completedCount) : 92;
 
     // Header Profile
     profileContainer.innerHTML = `
@@ -477,17 +706,17 @@ class DashboardManager {
         <div class="dash-kpi-card card-kpi-1">
           <div class="kpi-icon-badge">🏆</div>
           <div class="kpi-info">
-            <span class="kpi-label">Rata-Rata Nilai Kuis</span>
-            <h3 class="kpi-value">${completedCount > 0 ? avgScore : '100'} <small>/ 100</small></h3>
-            <span class="kpi-subtext">${completedCount > 0 ? `${completedCount} Level Diselesaikan` : 'Siap Menempuh Kuis'}</span>
+            <span class="kpi-label">Rata-Rata Nilai Kelas</span>
+            <h3 class="kpi-value">${avgClassScore} <small>/ 100</small></h3>
+            <span class="kpi-subtext">${roster.length} Siswa Terdaftar</span>
           </div>
         </div>
 
         <div class="dash-kpi-card card-kpi-2">
-          <div class="kpi-icon-badge">🧪</div>
+          <div class="kpi-icon-badge">👥</div>
           <div class="kpi-info">
-            <span class="kpi-label">Investigasi PBL</span>
-            <h3 class="kpi-value">${pblCount > 0 ? pblCount : '3'} <small>/ 3 Kasus</small></h3>
+            <span class="kpi-label">Siswa Menyelesaikan PBL</span>
+            <h3 class="kpi-value">${roster.filter(s => s.pbl && !s.pbl.startsWith('0')).length} <small>/ ${roster.length}</small></h3>
             <span class="kpi-subtext">Studi Kasus Dokter Cilik</span>
           </div>
         </div>
@@ -504,8 +733,10 @@ class DashboardManager {
         <div class="dash-kpi-card card-kpi-4">
           <div class="kpi-icon-badge">⚡</div>
           <div class="kpi-info">
-            <span class="kpi-label">Status Kelulusan</span>
-            <h3 class="kpi-value" style="color: var(--emerald-green); font-size: 1.5rem;">LULUS LENGKAP</h3>
+            <span class="kpi-label">Ketuntasan Kelas</span>
+            <h3 class="kpi-value" style="color: var(--emerald-green); font-size: 1.4rem;">
+              ${Math.round((roster.filter(s => s.status && (s.status.includes('Tuntas') || s.status.includes('Sangat') || s.status.includes('Sempurna'))).length / Math.max(1, roster.length)) * 100)}%
+            </h3>
             <span class="kpi-subtext">Predikat: Sangat Baik</span>
           </div>
         </div>
@@ -527,14 +758,14 @@ class DashboardManager {
     if (!container) return;
 
     const levels = [
-      { id: 'mudah', name: 'Tingkat Mudah', questions: '10 Soal Konsep Dasar', color: '#06d6a0', icon: '🟢' },
-      { id: 'sedang', name: 'Tingkat Sedang', questions: '10 Soal Analisis Rute', color: '#ffbe0b', icon: '🟡' },
-      { id: 'sulit', name: 'Tingkat Sulit', questions: '10 Soal Gangguan Klinis', color: '#ff0054', icon: '🔴' }
+      { id: 'mudah', altId: 'kecil', name: 'Tingkat Mudah (Alur Kecil)', questions: '5 Organ Sirkulasi Pulmonal', color: '#06d6a0', icon: '🟢' },
+      { id: 'sedang', altId: 'besar', name: 'Tingkat Sedang (Alur Besar)', questions: '5 Organ Sirkulasi Sistemik', color: '#ffbe0b', icon: '🟡' },
+      { id: 'sulit', altId: 'gabungan', name: 'Tingkat Sulit (Gabungan Lengkap)', questions: '10 Organ Sirkulasi Ganda', color: '#ff0054', icon: '🔴' }
     ];
 
     container.innerHTML = levels.map(lvl => {
-      const data = quizProg[lvl.id] || { score: 100, percentage: 100, date: new Date().toLocaleDateString('id-ID') };
-      const hasTaken = quizProg[lvl.id] !== undefined;
+      const data = quizProg[lvl.id] || quizProg[lvl.altId] || { score: 100, percentage: 100, date: new Date().toLocaleDateString('id-ID') };
+      const hasTaken = quizProg[lvl.id] !== undefined || quizProg[lvl.altId] !== undefined;
 
       return `
         <div class="dash-quiz-item-card" style="border-top-color: ${lvl.color}">
@@ -565,7 +796,7 @@ class DashboardManager {
           </div>
 
           <div class="dash-quiz-actions">
-            <button class="btn-cta-main" style="padding: 10px 16px; font-size: 0.88rem;" onclick="navigateTo('view-quiz'); window.quizEngine.startQuiz('${lvl.id}')">
+            <button class="btn-cta-main" style="padding: 10px 16px; font-size: 0.88rem;" onclick="navigateTo('view-quiz'); window.quizEngine.startQuiz('${lvl.altId}')">
               <span>▶️ Kerjakan Kuis</span>
             </button>
             <button class="btn-cta-secondary" style="padding: 10px 16px; font-size: 0.88rem;" onclick="window.dashboardMgr.claimCert('${lvl.name}')">
@@ -582,9 +813,9 @@ class DashboardManager {
     if (!container) return;
 
     const cases = [
-      { id: 0, title: 'Kasus 1: Hidung Berdarah Saat Upacara', badge: '🩸 Trombosit & Pembekuan', icon: '🚨', score: 100 },
-      { id: 1, title: 'Kasus 2: Wajah Pucat & Cepat Lelah', badge: '🩺 Eritrosit & Anemia', icon: '😴', score: 95 },
-      { id: 2, title: 'Kasus 3: Jantung Berdebar & Nadi Cepat', badge: '💓 Sirkulasi & Olahraga', icon: '🏃', score: 100 }
+      { id: 0, title: 'Kasus 1: Hidung Berdarah Saat Upacara', badge: '🩸 Trombosit & Pembekuan', icon: '🚨', score: pblProg.case_0 ? pblProg.case_0.score : 100 },
+      { id: 1, title: 'Kasus 2: Wajah Pucat & Cepat Lelah', badge: '🩺 Eritrosit & Anemia', icon: '😴', score: pblProg.case_1 ? pblProg.case_1.score : 95 },
+      { id: 2, title: 'Kasus 3: Jantung Berdebar & Nadi Cepat', badge: '💓 Sirkulasi & Olahraga', icon: '🏃', score: pblProg.case_2 ? pblProg.case_2.score : 100 }
     ];
 
     container.innerHTML = cases.map(c => `
@@ -625,30 +856,126 @@ class DashboardManager {
     const tableBody = document.getElementById('dash-students-table-body');
     if (!tableBody) return;
 
-    tableBody.innerHTML = this.sampleStudents.map((s, idx) => `
-      <tr>
-        <td><strong>${idx + 1}</strong></td>
-        <td>
-          <div class="student-cell-profile">
-            <span class="student-avatar-circle">${s.name.charAt(0)}</span>
-            <div>
-              <strong>${s.name}</strong>
-              <small class="student-id-txt">${s.id}</small>
+    let roster = window.authMgr ? window.authMgr.getRoster() : [];
+    const currentStudentName = window.authMgr && window.authMgr.currentStudent ? window.authMgr.currentStudent.name.toLowerCase() : '';
+
+    // Terapkan Filter Kategori
+    if (this.currentFilter === 'online') {
+      roster = roster.filter(s => currentStudentName && s.name.toLowerCase() === currentStudentName);
+    } else if (this.currentFilter === 'done') {
+      roster = roster.filter(s => typeof s.mudah === 'number' || typeof s.sedang === 'number' || typeof s.sulit === 'number' || (s.pbl && !s.pbl.startsWith('0')));
+    } else if (this.currentFilter === 'pending') {
+      roster = roster.filter(s => (s.mudah === '-' || s.mudah === undefined) && (s.sedang === '-' || s.sedang === undefined) && (s.sulit === '-' || s.sulit === undefined) && (!s.pbl || s.pbl.startsWith('0')));
+    }
+
+    if (roster.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 36px 20px; color: var(--text-muted);">
+            <div style="font-size: 2rem; margin-bottom: 8px;">📭</div>
+            <strong style="color: var(--text-heading); font-size: 1.05rem;">Tidak ada data siswa untuk filter ini</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.88rem;">Siswa yang login dari halaman utama akan otomatis tercatat dan muncul di sini.</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    const formatLoginTime = (isoString) => {
+      if (!isoString) return 'Hari ini';
+      try {
+        const d = new Date(isoString);
+        return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+      } catch (e) {
+        return 'Hari ini';
+      }
+    };
+
+    tableBody.innerHTML = roster.map((s, idx) => {
+      const isCurrentActive = currentStudentName && s.name.toLowerCase() === currentStudentName;
+
+      const formatScoreBadge = (score) => {
+        if (score === '-' || score === undefined || score === null) {
+          return `<span class="badge-table-score score-muted" style="background: rgba(148, 163, 184, 0.15); color: var(--text-muted); font-weight: normal;">Belum</span>`;
+        }
+        const num = Number(score);
+        if (num >= 85) return `<span class="badge-table-score score-green">${num}</span>`;
+        if (num >= 70) return `<span class="badge-table-score score-yellow">${num}</span>`;
+        return `<span class="badge-table-score score-red">${num}</span>`;
+      };
+
+      // Hitung Berapa Kuis yang Sudah Dikerjakan
+      let quizDoneCount = 0;
+      if (typeof s.mudah === 'number') quizDoneCount++;
+      if (typeof s.sedang === 'number') quizDoneCount++;
+      if (typeof s.sulit === 'number') quizDoneCount++;
+
+      const isPblDone = s.pbl && !s.pbl.startsWith('0');
+
+      let progressBadge = '';
+      if (quizDoneCount === 3 && isPblDone) {
+        progressBadge = `<span class="badge-status-tuntas" style="background: rgba(6, 214, 160, 0.22); color: #059669; font-weight: 800;">⭐ Lulus Lengkap</span>`;
+      } else if (quizDoneCount === 3) {
+        progressBadge = `<span class="badge-status-tuntas" style="background: rgba(6, 214, 160, 0.18); color: #059669;">✅ 3/3 Kuis Tuntas</span>`;
+      } else if (quizDoneCount > 0) {
+        progressBadge = `<span class="badge-status-tuntas" style="background: rgba(255, 190, 11, 0.2); color: #b45309;">📝 Mengerjakan (${quizDoneCount}/3)</span>`;
+      } else {
+        progressBadge = `<span class="badge-status-tuntas" style="background: rgba(58, 134, 255, 0.15); color: #2563eb;">🟢 Login (Belum Kuis)</span>`;
+      }
+
+      return `
+        <tr class="${isCurrentActive ? 'active-student-row' : ''}">
+          <td><strong>${idx + 1}</strong></td>
+          <td>
+            <div class="student-cell-profile">
+              <span class="student-avatar-circle" style="${isCurrentActive ? 'background: linear-gradient(135deg, #06d6a0, #3a86ff); box-shadow: 0 0 10px rgba(6,214,160,0.5);' : ''}">
+                ${s.avatar || s.name.charAt(0)}
+              </span>
+              <div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="color: var(--text-heading); font-size: 0.95rem;">${s.name}</strong>
+                  ${isCurrentActive ? `<span class="badge-tag-online">ONLINE</span>` : ''}
+                </div>
+                <small class="student-id-txt">${s.id} • ${s.className || 'Kelas VI-A'}</small>
+              </div>
             </div>
-          </div>
-        </td>
-        <td><span class="badge-table-score score-green">${s.mudah}</span></td>
-        <td><span class="badge-table-score score-yellow">${s.sedang}</span></td>
-        <td><span class="badge-table-score score-red">${s.sulit}</span></td>
-        <td><span class="badge-table-pbl">${s.pbl}</span></td>
-        <td>
-          <span class="badge-status-tuntas">${s.status}</span>
-        </td>
-        <td class="student-notes-cell">
-          <span title="${s.notes}">${s.notes}</span>
-        </td>
-      </tr>
-    `).join('');
+          </td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 0.82rem; font-weight: 700; color: ${isCurrentActive ? '#059669' : 'var(--text-main)'};">
+                ${isCurrentActive ? '🟢 Sedang Aktif' : '🕒 Terakhir Masuk'}
+              </span>
+              <small style="color: var(--text-muted); font-size: 0.78rem;">${formatLoginTime(s.loginTime || s.lastActive)}</small>
+            </div>
+          </td>
+          <td>${formatScoreBadge(s.mudah)}</td>
+          <td>${formatScoreBadge(s.sedang)}</td>
+          <td>${formatScoreBadge(s.sulit)}</td>
+          <td><span class="badge-table-pbl">${s.pbl || '0 Kasus'}</span></td>
+          <td>${progressBadge}</td>
+          <td class="student-notes-cell">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+              <span title="${s.notes || '-'}" style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${s.notes || '-'}</span>
+              <div style="display: flex; gap: 4px; flex-shrink: 0;">
+                <button title="Cetak Rapor Siswa Ini" onclick="window.dashboardMgr.printSingleStudent('${s.id}')" class="btn-table-action" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 0.85rem;" onmouseover="this.style.borderColor='var(--cardiac-blue)'" onmouseout="this.style.borderColor='var(--border-subtle)'">🖨️</button>
+                <button title="Hapus Siswa" onclick="window.authMgr.deleteStudent('${s.id}')" class="btn-table-action" style="background: var(--bg-surface); border: 1px solid rgba(255,0,84,0.3); color: var(--primary-red); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 0.85rem;" onmouseover="this.style.background='rgba(255,0,84,0.1)'" onmouseout="this.style.background='var(--bg-surface)'">🗑️</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  setFilter(filterType) {
+    if (window.audioMgr) window.audioMgr.playClickSound();
+    this.currentFilter = filterType;
+
+    document.querySelectorAll('.dash-filter-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filterType);
+    });
+
+    this.renderStudentRosterTab();
   }
 
   filterStudents(query) {
@@ -662,39 +989,64 @@ class DashboardManager {
 
   exportStudentsCSV() {
     if (window.audioMgr) window.audioMgr.playClickSound();
-    let csv = 'No,ID Siswa,Nama Lengkap,Kuis Mudah,Kuis Sedang,Kuis Sulit,Asesmen PBL,Status,Catatan Guru\n';
-    this.sampleStudents.forEach((s, i) => {
-      csv += `"${i + 1}","${s.id}","${s.name}","${s.mudah}","${s.sedang}","${s.sulit}","${s.pbl}","${s.status}","${s.notes}"\n`;
+    const roster = window.authMgr ? window.authMgr.getRoster() : [];
+    let csv = 'No,ID Siswa,Nama Lengkap,Kelas,Kuis Mudah,Kuis Sedang,Kuis Sulit,Asesmen PBL,Status,Catatan Guru\n';
+    roster.forEach((s, i) => {
+      const mudahVal = s.mudah !== undefined ? s.mudah : '-';
+      const sedangVal = s.sedang !== undefined ? s.sedang : '-';
+      const sulitVal = s.sulit !== undefined ? s.sulit : '-';
+      const pblVal = s.pbl || '0 Kasus';
+      const notesClean = (s.notes || '-').replace(/"/g, '""');
+      csv += `"${i + 1}","${s.id}","${s.name}","${s.className || 'Kelas VI-A'}","${mudahVal}","${sedangVal}","${sulitVal}","${pblVal}","${s.status}","${notesClean}"\n`;
     });
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `Rekap_Nilai_Sistem_Peredaran_Darah_Kelas_VI_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.download = `Buku_Nilai_Sistem_Peredaran_Darah_Kelas_VI_${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
-    window.authMgr.showToast('📥 Berhasil mengekspor data rekap nilai siswa (CSV)!', 'success');
+    window.authMgr.showToast('📥 Berhasil mengekspor data Buku Nilai Siswa (CSV)!', 'success');
   }
 
   claimCert(levelTitle) {
-    const user = window.authMgr ? window.authMgr.currentUser : null;
-    const name = user ? user.name : 'Meisya Ranny';
+    const student = window.authMgr && window.authMgr.currentStudent ? window.authMgr.currentStudent : (window.authMgr ? window.authMgr.currentUser : null);
+    const name = student ? student.name : 'Meisya Ranny';
     if (window.quizEngine) {
       window.quizEngine.generateCertificate(name);
     }
   }
 
-  printTranscript() {
+  printSingleStudent(studentId) {
+    const roster = window.authMgr ? window.authMgr.getRoster() : [];
+    const student = roster.find(s => s.id === studentId);
+    if (student) {
+      this.printTranscript(student);
+    }
+  }
+
+  printTranscript(studentTarget = null) {
     if (window.audioMgr) window.audioMgr.playClickSound();
-    const user = window.authMgr ? window.authMgr.currentUser : { name: 'Meisya Ranny', school: 'SD Kelas VI' };
+    let target = studentTarget;
+    if (!target) {
+      target = (window.authMgr && window.authMgr.currentStudent) ? window.authMgr.currentStudent : (window.authMgr ? window.authMgr.currentUser : { name: 'Meisya Ranny', school: 'SD Kelas VI' });
+    }
+
+    const roster = window.authMgr ? window.authMgr.getRoster() : [];
+    const studentData = roster.find(s => s.name.toLowerCase() === target.name.toLowerCase()) || target;
+
     const today = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     const printWin = window.open('', '_blank');
+
+    const mudahScore = studentData.mudah !== undefined && studentData.mudah !== '-' ? studentData.mudah : 100;
+    const sedangScore = studentData.sedang !== undefined && studentData.sedang !== '-' ? studentData.sedang : 100;
+    const sulitScore = studentData.sulit !== undefined && studentData.sulit !== '-' ? studentData.sulit : 95;
 
     printWin.document.write(`
       <!DOCTYPE html>
       <html lang="id">
       <head>
         <meta charset="UTF-8">
-        <title>Rapor Capaian Pembelajaran - ${user.name}</title>
+        <title>Rapor Capaian Pembelajaran - ${studentData.name}</title>
         <style>
           body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e293b; padding: 40px; margin: 0; }
           .header { text-align: center; border-bottom: 3px double #e2e8f0; padding-bottom: 20px; margin-bottom: 25px; }
@@ -724,23 +1076,23 @@ class DashboardManager {
           <tr>
             <td width="25%"><strong>Nama Siswa / Pengguna</strong></td>
             <td width="2%">:</td>
-            <td><strong>${user.name}</strong></td>
+            <td><strong>${studentData.name}</strong></td>
             <td width="20%"><strong>Tanggal Cetak</strong></td>
             <td width="2%">:</td>
             <td>${today}</td>
           </tr>
           <tr>
-            <td><strong>Username Akun</strong></td>
+            <td><strong>ID / NIS Siswa</strong></td>
             <td>:</td>
-            <td><code>${user.username}</code></td>
+            <td><code>${studentData.id || 'SIS-01'}</code></td>
             <td><strong>Status Kelulusan</strong></td>
             <td>:</td>
-            <td><strong style="color: #15803d;">LULUS SANGAT BAIK ⭐</strong></td>
+            <td><strong style="color: #15803d;">${studentData.status || 'LULUS SANGAT BAIK ⭐'}</strong></td>
           </tr>
           <tr>
             <td><strong>Jenjang & Kelas</strong></td>
             <td>:</td>
-            <td>${user.school}</td>
+            <td>${studentData.className || 'SD Kelas VI • IPA Kurikulum Merdeka'}</td>
             <td><strong>Predikat Akhir</strong></td>
             <td>:</td>
             <td>Dokter Cilik Teladan (A+)</td>
@@ -761,23 +1113,23 @@ class DashboardManager {
           <tbody>
             <tr>
               <td>1</td>
-              <td>Kuis Tingkat Mudah (Anatomi & Komponen)</td>
-              <td><strong>100 / 100</strong></td>
-              <td>100%</td>
+              <td>Kuis Tingkat Mudah (Peredaran Darah Kecil)</td>
+              <td><strong>${mudahScore} / 100</strong></td>
+              <td>${mudahScore}%</td>
               <td><span class="badge badge-tuntas">Tuntas Sempurna</span></td>
             </tr>
             <tr>
               <td>2</td>
-              <td>Kuis Tingkat Sedang (Sirkulasi Darah Besar & Kecil)</td>
-              <td><strong>100 / 100</strong></td>
-              <td>100%</td>
+              <td>Kuis Tingkat Sedang (Peredaran Darah Besar)</td>
+              <td><strong>${sedangScore} / 100</strong></td>
+              <td>${sedangScore}%</td>
               <td><span class="badge badge-tuntas">Tuntas Sempurna</span></td>
             </tr>
             <tr>
               <td>3</td>
-              <td>Kuis Tingkat Sulit (Analisis Gangguan & Penyakit)</td>
-              <td><strong>95 / 100</strong></td>
-              <td>95%</td>
+              <td>Kuis Tingkat Sulit (Gabungan Alur Utuh)</td>
+              <td><strong>${sulitScore} / 100</strong></td>
+              <td>${sulitScore}%</td>
               <td><span class="badge badge-tuntas">Tuntas Sangat Baik</span></td>
             </tr>
           </tbody>
@@ -821,15 +1173,15 @@ class DashboardManager {
 
         <div class="footer-sign">
           <div class="sign-box">
-            <p>Mengetahui,<br>Kepala Sekolah / Instruktur</p>
+            <p>Mengetahui,<br>Guru Pengampu IPA</p>
             <div class="sign-space"></div>
-            <p><strong>( Dr. Hemi, M.Pd. )</strong><br><small>NIP. 19850612 201001 1 008</small></p>
+            <p><strong>( Meisya Ranny, S.Pd. )</strong><br><small>NIP. 19920815 201802 2 004</small></p>
           </div>
 
           <div class="sign-box">
             <p>Siswa / Peserta Didik,<br>&nbsp;</p>
             <div class="sign-space"></div>
-            <p><strong>( ${user.name} )</strong><br><small>ID: ${user.username}</small></p>
+            <p><strong>( ${studentData.name} )</strong><br><small>ID: ${studentData.id || 'SIS-01'}</small></p>
           </div>
         </div>
       </body>
@@ -847,3 +1199,4 @@ class DashboardManager {
 // Inisialisasi Instance Global
 window.authMgr = new AuthManager();
 window.dashboardMgr = new DashboardManager();
+

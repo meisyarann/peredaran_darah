@@ -400,8 +400,22 @@ class PBLManager {
         date: new Date().toLocaleDateString('id-ID')
       };
       localStorage.setItem('hematology_pbl_progress', JSON.stringify(existing));
+
+      // Rekam nilai PBL ke Buku Nilai Siswa di Dashboard Guru
+      if (window.authMgr && typeof window.authMgr.updateStudentScore === 'function') {
+        const studentName = window.authMgr.currentStudent ? window.authMgr.currentStudent.name : 'Meisya Ranny';
+        const totalCompleted = Object.keys(existing).length;
+        window.authMgr.updateStudentScore(studentName, {
+          pblCount: totalCompleted,
+          pblScore: score,
+          pblRefleksi: refleksi
+        });
+      }
+
       if (window.updateDashboardStats) window.updateDashboardStats();
-    } catch (e) {}
+    } catch (e) {
+      console.error('Gagal menyimpan progres PBL:', e);
+    }
   }
 
   downloadPBLReport(score) {

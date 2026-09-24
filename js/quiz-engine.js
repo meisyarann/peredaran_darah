@@ -47,7 +47,16 @@ class QuizEngine {
   }
 
   getLevelData() {
-    return CIRCULATORY_DATA.circulationQuizData[this.currentLevel] || CIRCULATORY_DATA.circulationQuizData.kecil;
+    const levelAliases = {
+      'mudah': 'kecil',
+      'kecil': 'kecil',
+      'sedang': 'besar',
+      'besar': 'besar',
+      'sulit': 'gabungan',
+      'gabungan': 'gabungan'
+    };
+    const key = levelAliases[this.currentLevel] || this.currentLevel || 'kecil';
+    return CIRCULATORY_DATA.circulationQuizData[key] || CIRCULATORY_DATA.circulationQuizData.kecil;
   }
 
   renderSequenceLab() {
@@ -383,8 +392,21 @@ class QuizEngine {
         date: new Date().toLocaleDateString('id-ID')
       };
       localStorage.setItem('hematology_quiz_progress', JSON.stringify(existing));
+
+      // Rekam nilai ke Buku Nilai Siswa di Dashboard Guru
+      if (window.authMgr && typeof window.authMgr.updateStudentScore === 'function') {
+        const studentName = window.authMgr.currentStudent ? window.authMgr.currentStudent.name : (this.studentName || 'Meisya Ranny');
+        window.authMgr.updateStudentScore(studentName, {
+          level: level,
+          score: score,
+          percentage: percentage
+        });
+      }
+
       if (window.updateDashboardStats) window.updateDashboardStats();
-    } catch (e) {}
+    } catch (e) {
+      console.error('Gagal menyimpan progres kuis:', e);
+    }
   }
 
   // --- GENERATOR SERTIFIKAT KELULUSAN RESMI DI CANVAS ---

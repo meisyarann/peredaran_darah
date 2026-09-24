@@ -94,6 +94,7 @@ class SettingsManager {
   resetProgress() {
     if (confirm("Apakah kamu yakin ingin mereset seluruh skor kuis dan progres belajar?")) {
       localStorage.removeItem('hematology_quiz_progress');
+      localStorage.removeItem('hematology_pbl_progress');
       alert("Progres belajarmu telah berhasil direset!");
       if (window.updateDashboardStats) window.updateDashboardStats();
     }

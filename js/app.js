@@ -755,16 +755,20 @@ function updateDashboardStats() {
     const badge2 = document.getElementById('dash-badge-sedang');
     const badge3 = document.getElementById('dash-badge-sulit');
 
-    if (badge1 && progress.mudah) {
-      badge1.textContent = `Tuntas (${progress.mudah.score}/100)`;
+    const scoreMudah = progress.mudah || progress.kecil;
+    const scoreSedang = progress.sedang || progress.besar;
+    const scoreSulit = progress.sulit || progress.gabungan;
+
+    if (badge1 && scoreMudah) {
+      badge1.textContent = `Tuntas (${scoreMudah.score}/100)`;
       badge1.className = 'dash-badge completed';
     }
-    if (badge2 && progress.sedang) {
-      badge2.textContent = `Tuntas (${progress.sedang.score}/100)`;
+    if (badge2 && scoreSedang) {
+      badge2.textContent = `Tuntas (${scoreSedang.score}/100)`;
       badge2.className = 'dash-badge completed';
     }
-    if (badge3 && progress.sulit) {
-      badge3.textContent = `Tuntas (${progress.sulit.score}/100)`;
+    if (badge3 && scoreSulit) {
+      badge3.textContent = `Tuntas (${scoreSulit.score}/100)`;
       badge3.className = 'dash-badge completed';
     }
 

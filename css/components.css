@@ -2361,11 +2361,17 @@ html.dark-theme .pulse-calc-box {
 
 .student-notes-cell {
   max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 0.85rem;
   color: var(--text-muted);
+}
+
+.active-student-row {
+  background: rgba(58, 134, 255, 0.08) !important;
+  border-left: 4px solid var(--cardiac-blue) !important;
+}
+
+.active-student-row:hover {
+  background: rgba(58, 134, 255, 0.12) !important;
 }
 
 /* Tab 4: Account Card */
@@ -2517,4 +2523,365 @@ html.dark-theme .pulse-calc-box {
   height: 100%;
   border: 0;
   display: block;
+}
+
+/* ==========================================================================
+   PORTAL LOGIN UTAMA (TAMPILAN DEPAN / ROLE SELECTOR)
+   ========================================================================== */
+.portal-main-wrapper {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 20px 15px 50px 15px;
+}
+
+.portal-hero-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.portal-top-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  background: rgba(58, 134, 255, 0.12);
+  color: var(--cardiac-blue);
+  border: 1px solid rgba(58, 134, 255, 0.3);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+}
+
+.portal-main-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  color: var(--text-heading);
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.portal-main-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 780px;
+  margin: 0 auto 20px auto;
+  line-height: 1.6;
+}
+
+.portal-instruction-pill {
+  display: inline-block;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-subtle);
+  padding: 8px 22px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-heading);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Roles Grid */
+.portal-roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.portal-role-card {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-role-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.portal-role-card.role-student {
+  border-top: 6px solid var(--cardiac-blue);
+}
+
+.portal-role-card.role-student:hover {
+  border-color: var(--cardiac-blue);
+  box-shadow: 0 16px 36px rgba(58, 134, 255, 0.18);
+}
+
+.portal-role-card.role-teacher {
+  border-top: 6px solid var(--primary-red);
+}
+
+.portal-role-card.role-teacher:hover {
+  border-color: var(--primary-red);
+  box-shadow: 0 16px 36px rgba(255, 0, 84, 0.18);
+}
+
+.portal-card-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.portal-icon-box {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.student-icon-glow {
+  background: linear-gradient(135deg, rgba(58, 134, 255, 0.15), rgba(6, 214, 160, 0.25));
+  border: 1px solid rgba(58, 134, 255, 0.3);
+}
+
+.teacher-icon-glow {
+  background: linear-gradient(135deg, rgba(255, 0, 84, 0.15), rgba(255, 190, 11, 0.25));
+  border: 1px solid rgba(255, 0, 84, 0.3);
+}
+
+.portal-card-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.badge-student { background: rgba(58, 134, 255, 0.15); color: var(--cardiac-blue); }
+.badge-teacher { background: rgba(255, 0, 84, 0.15); color: var(--primary-red); }
+
+.portal-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: var(--text-heading);
+  margin: 0;
+}
+
+.portal-card-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 22px;
+  min-height: 44px;
+}
+
+/* Forms in Portal */
+.portal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.portal-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.portal-input-group label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.portal-input,
+.portal-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-family: var(--font-base);
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.portal-input:focus,
+.portal-select:focus {
+  border-color: var(--cardiac-blue);
+  background: var(--bg-surface);
+  box-shadow: 0 0 0 4px rgba(58, 134, 255, 0.15);
+}
+
+.portal-input-row {
+  display: flex;
+  gap: 12px;
+}
+
+.portal-pass-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.portal-pass-wrap .portal-input {
+  padding-right: 46px;
+}
+
+.portal-toggle-pass-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.15rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.portal-toggle-pass-btn:hover {
+  opacity: 1;
+}
+
+.portal-demo-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: rgba(255, 190, 11, 0.12);
+  border: 1px dashed rgba(255, 190, 11, 0.4);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.portal-demo-hint code {
+  font-weight: 700;
+  color: #b45309;
+}
+
+/* Action Buttons */
+.btn-portal-action {
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-md);
+  margin-top: 6px;
+}
+
+.btn-student-action {
+  background: linear-gradient(135deg, #3a86ff, #2563eb);
+}
+
+.btn-student-action:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
+}
+
+.btn-teacher-action {
+  background: linear-gradient(135deg, #ff0054, #d90429);
+}
+
+.btn-teacher-action:hover {
+  background: linear-gradient(135deg, #d90429, #b5179e);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(217, 4, 41, 0.35);
+}
+
+.portal-guest-footer {
+  text-align: center;
+  padding: 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-guest-link {
+  background: none;
+  border: none;
+  color: var(--cardiac-blue);
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.92rem;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+}
+
+.btn-guest-link:hover {
+  color: var(--primary-red);
+  text-decoration: underline;
+}
+
+/* Dashboard Filter Pills */
+.dash-filter-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dash-filter-pill {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.dash-filter-pill:hover {
+  background: var(--bg-primary);
+  color: var(--text-heading);
+  border-color: var(--cardiac-blue);
+}
+
+.dash-filter-pill.active {
+  background: var(--cardiac-blue);
+  color: #ffffff;
+  border-color: var(--cardiac-blue);
+  box-shadow: 0 4px 10px rgba(58, 134, 255, 0.3);
+}
+
+.badge-tag-online {
+  font-size: 0.68rem;
+  background: #06d6a0;
+  color: #004b36;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  animation: pulse 2s infinite;
 }

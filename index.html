@@ -44,7 +44,17 @@
       <nav class="nav-menu-wrapper">
         <ul class="nav-links">
           <li>
-            <button class="nav-item-btn active-nav" data-target-view="view-beranda">
+            <button class="nav-item-btn active-nav" data-target-view="view-portal">
+              <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" x2="3" y1="12" y2="12"/>
+              </svg>
+              <span>Portal Masuk</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item-btn" data-target-view="view-beranda">
               <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 <polyline points="9 22 9 12 15 12 15 22"/>
@@ -168,9 +178,143 @@
     </header>
 
     <!-- ========================================================================= -->
+    <!-- 0. HALAMAN PORTAL LOGIN UTAMA (TAMPILAN DEPAN / PILIH GURU ATAU SISWA) -->
+    <!-- ========================================================================= -->
+    <section id="view-portal" class="app-view-section active-view">
+      <div class="portal-main-wrapper">
+        
+        <!-- PORTAL HERO HEADER -->
+        <div class="portal-hero-header">
+          <span class="portal-top-badge">✨ Portal Akses Media Pembelajaran Interaktif</span>
+          <h1 class="portal-main-title">
+            Petualangan <span class="hero-highlight">Sistem Peredaran Darah</span>
+          </h1>
+          <p class="portal-main-subtitle">
+            Media Pembelajaran Sains IPA Kelas VI SD Kurikulum Merdeka Berbasis Digital 3D Simulation & Problem-Based Learning (PBL).
+          </p>
+          <div class="portal-instruction-pill">
+            👇 Silakan pilih masuk sebagai <strong>Siswa</strong> atau <strong>Guru</strong> untuk memulai:
+          </div>
+        </div>
+
+        <!-- 2 PILIHAN UTAMA: SISWA ATAU GURU -->
+        <div class="portal-roles-grid">
+          
+          <!-- KARTU 1: SISWA -->
+          <div class="portal-role-card role-student">
+            <div class="portal-card-top">
+              <div class="portal-icon-box student-icon-glow">🎒</div>
+              <div>
+                <span class="portal-card-badge badge-student">Peserta Didik Kelas VI</span>
+                <h3 class="portal-card-title">Masuk Sebagai Siswa</h3>
+              </div>
+            </div>
+            <p class="portal-card-desc">
+              Masukkan nama & kelasmu untuk mulai petualangan 3D, coba mikroskop darah, selesaikan kuis alur sirkulasi, dan raih sertifikat prestasimu!
+            </p>
+
+            <form class="portal-form" onsubmit="event.preventDefault(); window.authMgr.loginAsStudentFromPortal();">
+              <div class="portal-input-group">
+                <label for="portal-student-name">
+                  <span>👤</span> <strong>Nama Lengkap Siswa:</strong>
+                </label>
+                <input type="text" id="portal-student-name" class="portal-input" placeholder="Tuliskan nama lengkapmu di sini..." required autocomplete="name">
+              </div>
+
+              <div class="portal-input-row">
+                <div class="portal-input-group" style="flex: 1;">
+                  <label for="portal-student-class">
+                    <span>🏫</span> <strong>Pilih Kelas:</strong>
+                  </label>
+                  <select id="portal-student-class" class="portal-select">
+                    <option value="Kelas VI-A">Kelas VI-A</option>
+                    <option value="Kelas VI-B">Kelas VI-B</option>
+                    <option value="Kelas VI-C">Kelas VI-C</option>
+                  </select>
+                </div>
+                <div class="portal-input-group" style="width: 110px;">
+                  <label for="portal-student-avatar">
+                    <span>🎭</span> <strong>Avatar:</strong>
+                  </label>
+                  <select id="portal-student-avatar" class="portal-select">
+                    <option value="🎒">🎒 Tas</option>
+                    <option value="👩‍🎓">👩‍🎓 Pelajar</option>
+                    <option value="👦">👦 Siswa</option>
+                    <option value="👧">👧 Siswi</option>
+                    <option value="🩺">🩺 Dokter</option>
+                    <option value="🔬">🔬 Peneliti</option>
+                    <option value="🚀">🚀 Roket</option>
+                    <option value="⭐">⭐ Bintang</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-portal-action btn-student-action">
+                <span>🚀 Mulai Belajar Sekarang</span>
+                <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- KARTU 2: GURU -->
+          <div class="portal-role-card role-teacher">
+            <div class="portal-card-top">
+              <div class="portal-icon-box teacher-icon-glow">👩‍🏫</div>
+              <div>
+                <span class="portal-card-badge badge-teacher">Pendidik & Fasilitator</span>
+                <h3 class="portal-card-title">Login Sebagai Guru</h3>
+              </div>
+            </div>
+            <p class="portal-card-desc">
+              Akses khusus Guru untuk memantau kehadiran siswa yang sedang login, data nilai kuis & asesmen PBL secara real-time, dan cetak rapor kelas.
+            </p>
+
+            <form class="portal-form" onsubmit="event.preventDefault(); window.authMgr.loginAsTeacherFromPortal();">
+              <div class="portal-input-group">
+                <label for="portal-teacher-username">
+                  <span>🆔</span> <strong>Username Guru:</strong>
+                </label>
+                <input type="text" id="portal-teacher-username" class="portal-input" placeholder="Masukkan username guru..." value="meisyaranny" required autocomplete="username">
+              </div>
+
+              <div class="portal-input-group">
+                <label for="portal-teacher-password">
+                  <span>🔒</span> <strong>Password:</strong>
+                </label>
+                <div class="portal-pass-wrap">
+                  <input type="password" id="portal-teacher-password" class="portal-input" placeholder="Masukkan password..." value="emeeii123" required autocomplete="current-password">
+                  <button type="button" class="portal-toggle-pass-btn" onclick="window.authMgr.togglePortalPasswordVisibility()">👁️</button>
+                </div>
+              </div>
+
+              <div class="portal-demo-hint">
+                <span>💡 Kredensial default: <code>meisyaranny</code> / <code>emeeii123</code></span>
+              </div>
+
+              <button type="submit" class="btn-portal-action btn-teacher-action">
+                <span>🔑 Masuk Dashboard Guru</span>
+                <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- FOOTER SHORTCUT -->
+        <div class="portal-guest-footer">
+          <span>Ingin langsung mencoba media tanpa login?</span>
+          <button class="btn-guest-link" onclick="navigateTo('view-beranda')">
+            <span>🌐 Masuk Sebagai Pengunjung / Tamu ➔</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
     <!-- 1. HALAMAN BERANDA (HOME) -->
     <!-- ========================================================================= -->
-    <main id="view-beranda" class="app-view-section active-view">
+    <main id="view-beranda" class="app-view-section">
       <!-- HERO BANNER -->
       <section class="hero-banner">
         <div class="hero-content">
@@ -1081,18 +1225,20 @@
           </div>
 
           <!-- SEARCH & FILTER TOOLBAR -->
-          <div class="dash-table-toolbar">
-            <div class="dash-search-box">
+          <div class="dash-table-toolbar" style="flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;">
+            <div class="dash-search-box" style="flex: 1; min-width: 250px;">
               <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"/>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
-              <input type="text" id="dash-search-input" placeholder="Cari nama siswa atau ID..." oninput="window.dashboardMgr.filterStudents(this.value)">
+              <input type="text" id="dash-search-input" placeholder="Cari nama siswa, ID, atau kelas..." oninput="window.dashboardMgr.filterStudents(this.value)">
             </div>
-            <div class="dash-table-legend">
-              <span class="legend-pill green">🟢 Mudah</span>
-              <span class="legend-pill yellow">🟡 Sedang</span>
-              <span class="legend-pill red">🔴 Sulit</span>
+            
+            <div class="dash-filter-group">
+              <button class="dash-filter-pill active" data-filter="all" onclick="window.dashboardMgr.setFilter('all')">Semua Siswa</button>
+              <button class="dash-filter-pill" data-filter="online" onclick="window.dashboardMgr.setFilter('online')">🟢 Sedang Online</button>
+              <button class="dash-filter-pill" data-filter="done" onclick="window.dashboardMgr.setFilter('done')">📝 Sudah Mengerjakan</button>
+              <button class="dash-filter-pill" data-filter="pending" onclick="window.dashboardMgr.setFilter('pending')">⏳ Belum Kuis</button>
             </div>
           </div>
 
@@ -1101,14 +1247,15 @@
             <table class="dash-students-table">
               <thead>
                 <tr>
-                  <th width="5%">No</th>
-                  <th width="25%">Nama Siswa & NIS</th>
-                  <th width="10%">Mudah</th>
-                  <th width="10%">Sedang</th>
-                  <th width="10%">Sulit</th>
-                  <th width="15%">Investigasi PBL</th>
-                  <th width="12%">Status</th>
-                  <th width="13%">Catatan Guru</th>
+                  <th width="4%">No</th>
+                  <th width="20%">Nama Siswa & NIS</th>
+                  <th width="14%">Waktu Login & Status</th>
+                  <th width="8%">Mudah</th>
+                  <th width="8%">Sedang</th>
+                  <th width="8%">Sulit</th>
+                  <th width="13%">Investigasi PBL</th>
+                  <th width="12%">Status Pengerjaan</th>
+                  <th width="13%">Catatan / Aksi</th>
                 </tr>
               </thead>
               <tbody id="dash-students-table-body">
