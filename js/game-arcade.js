@@ -933,6 +933,19 @@ class HemoArcadeGame {
       if (history.length > 10) history.pop();
       localStorage.setItem('hemo_game_history', JSON.stringify(history));
       this.renderLeaderboard();
+
+      // Sinkronkan hasil game ke Google Sheets API
+      if (window.dashboardMgr && typeof window.dashboardMgr.sendAssessmentToGoogleSheets === 'function') {
+        window.dashboardMgr.sendAssessmentToGoogleSheets({
+          action: 'game_result',
+          timestamp: new Date().toLocaleString('id-ID'),
+          namaSiswa: student,
+          modeGame: this.mode === 'runner' ? 'HemoRunner' : 'Pahlawan Leukosit',
+          level: this.level,
+          skorGame: this.score,
+          status: isWin ? 'Menang 🎉' : 'Selesai'
+        });
+      }
     } catch (e) {}
   }
 

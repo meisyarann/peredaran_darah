@@ -414,6 +414,21 @@ class AuthManager {
       // Sinkronkan ke Dashboard Guru
       if (window.dashboardMgr) {
         window.dashboardMgr.renderStudentRosterTab();
+        // Otomatis kirim progres ke Google Sheets API
+        window.dashboardMgr.sendAssessmentToGoogleSheets({
+          action: 'student_progress',
+          timestamp: new Date().toLocaleString('id-ID'),
+          id: student.id,
+          namaSiswa: student.name,
+          kelas: student.className || 'Kelas VI-A',
+          kuisMudah: student.mudah !== undefined ? student.mudah : '-',
+          kuisSedang: student.sedang !== undefined ? student.sedang : '-',
+          kuisSulit: student.sulit !== undefined ? student.sulit : '-',
+          asesmenPBL: student.pbl || '0 Kasus',
+          skorPBL: student.pblScore !== undefined ? student.pblScore : '-',
+          status: student.status || 'Belum Tuntas',
+          catatan: student.notes || '-'
+        });
       }
     } catch (e) {
       console.error('Gagal memperbarui nilai siswa:', e);
@@ -594,6 +609,130 @@ class DashboardManager {
   constructor() {
     this.currentTab = 'tab-overview';
     this.currentFilter = 'all';
+    this.googleSheetsUrl = 'https://script.google.com/macros/s/AKfycbwvmYeAX3fvr6yoP4hBPQFMaDvW4rYl10iGMMqBWwwBxjmT8amLpUgNn2Y0XJcP9VRekg/exec';
+  }
+
+  // Kirim data asesmen atau nilai siswa ke Google Sheets
+  async sendAssessmentToGoogleSheets(payload) {
+    if (!this.googleSheetsUrl) return;
+    try {
+      await fetch(this.googleSheetsUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      console.log('✅ Berhasil menyinkronkan data ke Google Sheets:', payload);
+    } catch (err) {
+      console.warn('⚠️ Gagal terhubung ke Google Sheets API:', err);
+    }
+  }
+
+  // Sinkronkan seluruh data Buku Nilai siswa ke Google Sheets
+  async syncAllToGoogleSheets() {
+    if (window.audioMgr) window.audioMgr.playClickSound();
+    const roster = window.authMgr ? window.authMgr.getRoster() : [];
+    if (!roster || roster.length === 0) {
+      window.authMgr.showToast('⚠️ Belum ada data siswa di Buku Nilai untuk disinkronkan.', 'warning');
+      return;
+    }
+
+    window.authMgr.showToast('⏳ Sedang menyinkronkan data Buku Nilai ke Google Sheets...', 'info');
+
+    try {
+      for (const s of roster) {
+        await this.sendAssessmentToGoogleSheets({
+          action: 'sync_roster_item',
+          timestamp: new Date().toLocaleString('id-ID'),
+          id: s.id,
+          namaSiswa: s.name,
+          kelas: s.className || 'Kelas VI-A',
+          kuisMudah: s.mudah !== undefined ? s.mudah : '-',
+          kuisSedang: s.sedang !== undefined ? s.sedang : '-',
+          kuisSulit: s.sulit !== undefined ? s.sulit : '-',
+          asesmenPBL: s.pbl || '0 Kasus',
+          skorPBL: s.pblScore !== undefined ? s.pblScore : '-',
+          status: s.status || 'Belum Tuntas',
+          catatan: s.notes || '-'
+        });
+      }
+
+      window.authMgr.showToast(`📊 Berhasil menyinkronkan ${roster.length} data siswa ke Google Sheets!`, 'success');
+      if (window.audioMgr) window.audioMgr.playFanfareSound();
+    } catch (err) {
+      console.error(err);
+      window.authMgr.showToast('❌ Terjadi kesalahan saat sinkronisasi Google Sheets.', 'error');
+    }
+  }
+
+  // Ambil data terbaru dari Google Sheets dan masukkan ke Buku Nilai
+  async fetchFromGoogleSheets(showToast = true) {
+    if (!this.googleSheetsUrl) return;
+    if (showToast && window.authMgr) {
+      window.authMgr.showToast('⏳ Mengambil data nilai dari Google Sheets...', 'info');
+    }
+
+    try {
+      const res = await fetch(this.googleSheetsUrl + '?action=get_students');
+      const json = await res.json();
+
+      if (json.status === 'success' && Array.isArray(json.data) && json.data.length > 0) {
+        const studentMap = new Map();
+
+        json.data.forEach((r, idx) => {
+          if (!r.namaSiswa || r.namaSiswa === '-' || r.namaSiswa.includes('(Tes)')) return;
+          const cleanName = r.namaSiswa.trim();
+          
+          const parseScore = (val) => {
+            if (val === '-' || val === undefined || val === null || val === '') return '-';
+            const num = Number(val);
+            return isNaN(num) ? '-' : num;
+          };
+
+          const pblScoreNum = parseScore(r.skorPBL);
+
+          studentMap.set(cleanName.toLowerCase(), {
+            id: r.id && String(r.id).startsWith('SIS-') ? r.id : `SIS-${String(studentMap.size + 1).padStart(2, '0')}`,
+            name: cleanName,
+            className: r.kelas && r.kelas !== '-' ? r.kelas : 'Kelas VI-A',
+            avatar: idx % 2 === 0 ? '👦' : '👧',
+            mudah: parseScore(r.kuisMudah),
+            sedang: parseScore(r.kuisSedang),
+            sulit: parseScore(r.kuisSulit),
+            pbl: r.asesmenPBL && r.asesmenPBL !== '-' ? r.asesmenPBL : '0 Kasus',
+            pblScore: pblScoreNum !== '-' ? pblScoreNum : 0,
+            status: r.status && r.status !== '-' ? r.status : 'Sedang Belajar ⏳',
+            notes: r.catatan && r.catatan !== '-' ? r.catatan : 'Data tersinkron dari Google Sheets',
+            joinedAt: r.timestamp || new Date().toISOString(),
+            lastActive: r.timestamp || new Date().toISOString()
+          });
+        });
+
+        if (studentMap.size > 0) {
+          const newRoster = Array.from(studentMap.values());
+          if (window.authMgr) {
+            window.authMgr.saveRoster(newRoster);
+          }
+          this.renderStudentRosterTab();
+          if (showToast && window.authMgr) {
+            window.authMgr.showToast(`✅ Berhasil memuat ${newRoster.length} data siswa dari Google Sheets!`, 'success');
+            if (window.audioMgr) window.audioMgr.playCorrectSound();
+          }
+          return newRoster;
+        }
+      }
+      
+      if (showToast && window.authMgr) {
+        window.authMgr.showToast('ℹ️ Data siswa di Google Sheets masih kosong.', 'info');
+      }
+    } catch (err) {
+      console.warn('⚠️ Gagal mengambil data langsung dari Google Sheets:', err);
+      if (showToast && window.authMgr) {
+        window.authMgr.showToast('⚠️ Gagal terhubung ke Google Sheets (menggunakan cache lokal).', 'warning');
+      }
+    }
   }
 
   init() {
@@ -614,6 +753,8 @@ class DashboardManager {
 
     if (tabId === 'tab-students') {
       this.renderStudentRosterTab();
+      // Tarik data terbaru dari Google Sheets secara otomatis di latar belakang
+      this.fetchFromGoogleSheets(false);
     }
   }
 
