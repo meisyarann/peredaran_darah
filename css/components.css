@@ -317,65 +317,6 @@ html.dark-theme .card-3d-img-container {
   margin-bottom: 8px;
 }
 
-/* PULSE CALCULATOR WIDGET */
-.pulse-calc-box {
-  background: linear-gradient(135deg, #fff0f3, #ffe3e8);
-  border: 2px dashed #ff4d6d;
-  border-radius: var(--radius-md);
-  padding: 24px;
-  text-align: center;
-  margin-top: 30px;
-}
-
-html.dark-theme .pulse-calc-box {
-  background: linear-gradient(135deg, #2b111e, #1a162b);
-  border-color: #ff0054;
-}
-
-.pulse-calc-box h4 {
-  font-family: var(--font-heading);
-  font-size: 1.3rem;
-  color: var(--primary-red);
-  margin-bottom: 6px;
-}
-
-.btn-tap-pulse-heart {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff0054, #ff5400);
-  border: 4px solid #ffffff;
-  font-size: 2.8rem;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(255, 0, 84, 0.4);
-  margin: 15px 0;
-  transition: transform 0.1s ease;
-}
-
-.btn-tap-pulse-heart:active {
-  transform: scale(0.92);
-}
-
-.pulse-bump {
-  animation: pulse-bump-anim 0.3s ease;
-}
-
-@keyframes pulse-bump-anim {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-  100% { transform: scale(1); }
-}
-
-.pulse-bpm-result {
-  font-size: 2.2rem;
-  font-weight: 800;
-  font-family: var(--font-heading);
-  color: var(--text-heading);
-}
 
 /* PEMBULUH DARAH SPECS */
 .vessels-grid {

@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initBackgroundParticles();
   initComponentViews();
   initDisordersView();
-  initPulseTapCalculator();
   initVirtualMicroscope();
   updateDashboardStats();
 
@@ -631,62 +630,6 @@ function initVirtualMicroscope() {
   drawBloodSlide(1.0);
 }
 
-// 4. KALKULATOR DETAK NADI INTERAKTIF (TAP-TO-MEASURE BPM)
-function initPulseTapCalculator() {
-  const tapBtn = document.getElementById('btn-tap-pulse');
-  const bpmOutput = document.getElementById('pulse-bpm-output');
-  const statusOutput = document.getElementById('pulse-status-output');
-  const heartIcon = document.getElementById('tap-pulse-heart-icon');
-
-  if (!tapBtn) return;
-
-  let tapTimes = [];
-  let resetTimer = null;
-
-  tapBtn.addEventListener('click', () => {
-    const now = performance.now();
-    tapTimes.push(now);
-
-    // Animasi denyut icon
-    if (heartIcon) {
-      heartIcon.classList.remove('pulse-bump');
-      void heartIcon.offsetWidth; // trigger reflow
-      heartIcon.classList.add('pulse-bump');
-    }
-
-    // Mainkan suara detak
-    if (window.audioMgr) window.audioMgr.playLubDub('normal');
-
-    clearTimeout(resetTimer);
-    resetTimer = setTimeout(() => {
-      tapTimes = [];
-    }, 3000);
-
-    if (tapTimes.length >= 4) {
-      const intervals = [];
-      for (let i = 1; i < tapTimes.length; i++) {
-        intervals.push(tapTimes[i] - tapTimes[i - 1]);
-      }
-      const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-      const bpm = Math.round((60 * 1000) / avgInterval);
-
-      if (bpmOutput) bpmOutput.textContent = `${bpm} BPM`;
-
-      let status = '';
-      if (bpm < 60) {
-        status = '🌙 Detak Sangat Santai / Istirahat';
-      } else if (bpm <= 100) {
-        status = '💚 Detak Normal Sehat (60 - 100 BPM)';
-      } else {
-        status = '⚡ Detak Cepat (Sedang Berolahraga / Bersemangat)';
-      }
-
-      if (statusOutput) statusOutput.textContent = status;
-    } else {
-      if (bpmOutput) bpmOutput.textContent = `Ketuk ${4 - tapTimes.length} kali lagi...`;
-    }
-  });
-}
 
 // 5. GANGGUAN SISTEM PEREDARAN DARAH DENGAN FAKTOR PENYEBAB & SUARA NARATOR
 function initDisordersView() {
