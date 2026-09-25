@@ -1000,13 +1000,58 @@ class DashboardManager {
     let roster = window.authMgr ? window.authMgr.getRoster() : [];
     const currentStudentName = window.authMgr && window.authMgr.currentStudent ? window.authMgr.currentStudent.name.toLowerCase() : '';
 
-    // Terapkan Filter Kategori
-    if (this.currentFilter === 'online') {
+    const parseTimeValue = (s) => {
+      const timeStr = s.joinedAt || s.loginTime || s.lastActive;
+      if (!timeStr) {
+        const idNum = parseInt((s.id || '').replace(/\D/g, ''), 10);
+        return isNaN(idNum) ? 9999999999999 : idNum * 1000;
+      }
+      if (typeof timeStr === 'string' && timeStr.includes('/')) {
+        const parts = timeStr.split(/[, ]+/);
+        const dateParts = parts[0].split('/');
+        if (dateParts.length === 3) {
+          const d = parseInt(dateParts[0], 10);
+          const m = parseInt(dateParts[1], 10) - 1;
+          const y = parseInt(dateParts[2], 10);
+          const timeParts = (parts[1] || '00:00:00').split(/[:.]/);
+          const h = parseInt(timeParts[0] || 0, 10);
+          const min = parseInt(timeParts[1] || 0, 10);
+          const sec = parseInt(timeParts[2] || 0, 10);
+          const parsedDate = new Date(y, m, d, h, min, sec);
+          if (!isNaN(parsedDate.getTime())) return parsedDate.getTime();
+        }
+      }
+      const dateObj = new Date(timeStr);
+      if (!isNaN(dateObj.getTime())) return dateObj.getTime();
+      const idNum = parseInt((s.id || '').replace(/\D/g, ''), 10);
+      return isNaN(idNum) ? 9999999999999 : idNum * 1000;
+    };
+
+    const hasDoneQuestions = (s) => {
+      return typeof s.mudah === 'number' || typeof s.sedang === 'number' || typeof s.sulit === 'number' || (s.pbl && typeof s.pbl === 'string' && !s.pbl.startsWith('0'));
+    };
+
+    // Terapkan Filter & Pengurutan: Pengguna pertama masuk & mengerjakan soal teratas
+    if (this.currentFilter === 'first-done') {
+      roster = roster.filter(s => hasDoneQuestions(s));
+      roster.sort((a, b) => parseTimeValue(a) - parseTimeValue(b)); // Urutan pertama masuk & mengerjakan teratas
+    } else if (this.currentFilter === 'online') {
       roster = roster.filter(s => currentStudentName && s.name.toLowerCase() === currentStudentName);
     } else if (this.currentFilter === 'done') {
-      roster = roster.filter(s => typeof s.mudah === 'number' || typeof s.sedang === 'number' || typeof s.sulit === 'number' || (s.pbl && !s.pbl.startsWith('0')));
+      roster = roster.filter(s => hasDoneQuestions(s));
+      roster.sort((a, b) => parseTimeValue(a) - parseTimeValue(b));
     } else if (this.currentFilter === 'pending') {
-      roster = roster.filter(s => (s.mudah === '-' || s.mudah === undefined) && (s.sedang === '-' || s.sedang === undefined) && (s.sulit === '-' || s.sulit === undefined) && (!s.pbl || s.pbl.startsWith('0')));
+      roster = roster.filter(s => !hasDoneQuestions(s));
+      roster.sort((a, b) => parseTimeValue(a) - parseTimeValue(b));
+    } else {
+      // Filter 'all': Prioritaskan yang sudah mengerjakan, diurutkan dari yang pertama kali masuk
+      roster.sort((a, b) => {
+        const aDone = hasDoneQuestions(a);
+        const bDone = hasDoneQuestions(b);
+        if (aDone && !bDone) return -1;
+        if (!aDone && bDone) return 1;
+        return parseTimeValue(a) - parseTimeValue(b);
+      });
     }
 
     if (roster.length === 0) {
@@ -1022,14 +1067,29 @@ class DashboardManager {
       return;
     }
 
-    const formatLoginTime = (isoString) => {
-      if (!isoString) return 'Hari ini';
-      try {
-        const d = new Date(isoString);
-        return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
-      } catch (e) {
-        return 'Hari ini';
+    const formatLoginTime = (timeInput) => {
+      if (!timeInput) return 'Hari ini';
+      if (typeof timeInput === 'string' && timeInput.includes('WIB')) return timeInput;
+
+      // Format DD/MM/YYYY, HH.MM.SS atau DD/MM/YYYY HH:MM:SS
+      if (typeof timeInput === 'string' && timeInput.includes('/')) {
+        const parts = timeInput.split(/[, ]+/);
+        if (parts.length >= 2) {
+          const timeParts = parts[1].split(/[:.]/);
+          if (timeParts.length >= 2) {
+            return `${String(timeParts[0]).padStart(2, '0')}.${String(timeParts[1]).padStart(2, '0')} WIB`;
+          }
+        }
       }
+
+      try {
+        const d = new Date(timeInput);
+        if (!isNaN(d.getTime())) {
+          return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(':', '.') + ' WIB';
+        }
+      } catch (e) {}
+
+      return typeof timeInput === 'string' && timeInput.trim() ? timeInput : 'Hari ini';
     };
 
     tableBody.innerHTML = roster.map((s, idx) => {
@@ -1086,7 +1146,7 @@ class DashboardManager {
               <span style="font-size: 0.82rem; font-weight: 700; color: ${isCurrentActive ? '#059669' : 'var(--text-main)'};">
                 ${isCurrentActive ? '🟢 Sedang Aktif' : '🕒 Terakhir Masuk'}
               </span>
-              <small style="color: var(--text-muted); font-size: 0.78rem;">${formatLoginTime(s.loginTime || s.lastActive)}</small>
+              <small style="color: var(--text-muted); font-size: 0.78rem;">${formatLoginTime(s.loginTime || s.lastActive || s.joinedAt)}</small>
             </div>
           </td>
           <td>${formatScoreBadge(s.mudah)}</td>

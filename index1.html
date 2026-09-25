@@ -1096,8 +1096,9 @@
                             <input type="text" id="dash-search-input" placeholder="Cari nama siswa, ID, atau kelas..."
                                 oninput="window.dashboardMgr.filterStudents(this.value)">
                         </div>
-                        <div class="dash-filter-group">
-                            <button class="dash-filter-pill active" data-filter="all" onclick="window.dashboardMgr.setFilter('all')">Semua Siswa</button>
+                        <div class="dash-filter-group" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="dash-filter-pill active" data-filter="all" onclick="window.dashboardMgr.setFilter('all')" title="Urutan otomatis: Siswa pertama masuk & mengerjakan soal teratas">Semua Siswa</button>
+                            <button class="dash-filter-pill" data-filter="first-done" onclick="window.dashboardMgr.setFilter('first-done')">🥇 Pertama Masuk & Mengerjakan</button>
                             <button class="dash-filter-pill" data-filter="online" onclick="window.dashboardMgr.setFilter('online')">🟢 Sedang Online</button>
                             <button class="dash-filter-pill" data-filter="done" onclick="window.dashboardMgr.setFilter('done')">📝 Sudah Mengerjakan</button>
                             <button class="dash-filter-pill" data-filter="pending" onclick="window.dashboardMgr.setFilter('pending')">⏳ Belum Kuis</button>
