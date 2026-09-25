@@ -424,12 +424,39 @@
 
 @media (max-width: 768px) {
   #circulation-3d-canvas-container {
-    height: 440px;
+    height: clamp(340px, 50vh, 460px);
   }
-  .hud-top-bar, .hud-bottom-bar {
-    position: static;
-    background: #0f172a;
-    padding: 10px;
-    border-radius: 0;
+  .hud-top-bar {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    gap: 6px;
+  }
+  .hud-pill-group {
+    padding: 3px 6px;
+    gap: 4px;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .hud-pill-group::-webkit-scrollbar {
+    display: none;
+  }
+  .hud-mode-btn {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    gap: 4px;
+  }
+  .hud-bottom-bar {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+  }
+  .hud-card-info {
+    max-width: 100%;
+    padding: 12px 14px;
+    font-size: 0.85rem;
   }
 }

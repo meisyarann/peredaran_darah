@@ -77,6 +77,71 @@
                             <span>Komponen</span>
                         </button>
                     </li>
+                    <li>
+                        <button class="nav-item-btn" data-target-view="view-peredaran-3d">
+                            <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg>
+                            <span>Peredaran 3D</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-target-view="view-gangguan">
+                            <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="m9 12 2 2 4-4"/>
+                            </svg>
+                            <span>Gangguan Darah</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-target-view="view-quiz">
+                            <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="6" cy="6" r="3"/>
+                                <circle cx="6" cy="18" r="3"/>
+                                <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                                <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                                <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                            </svg>
+                            <span>Latihan Alur</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-target-view="view-pbl">
+                            <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/>
+                            </svg>
+                            <span>Asesmen PBL</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-target-view="view-pengaturan">
+                            <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <span>Pengaturan</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-target-view="view-dashboard">
+                            <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="7" height="7" x="3" y="3" rx="1"/>
+                                <rect width="7" height="7" x="14" y="3" rx="1"/>
+                                <rect width="7" height="7" x="14" y="14" rx="1"/>
+                                <rect width="7" height="7" x="3" y="14" rx="1"/>
+                            </svg>
+                            <span>Dashboard</span>
+                        </button>
+                    </li>
                 </ul>
             </nav>
 
@@ -101,13 +166,13 @@
         </header>
 
         <!-- ========================================================================= -->
-        <!-- 0. HALAMAN PORTAL UTAMA (TAMPILAN DEPAN) -->
+        <!-- 0. HALAMAN PORTAL UTAMA (TAMPILAN DEPAN / PILIH PERAN) -->
         <!-- ========================================================================= -->
         <section id="view-portal" class="app-view-section active-view">
-            <div class="portal-main-wrapper" style="min-height: 55vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px 20px 60px 20px;">
+            <div class="portal-main-wrapper">
                 
                 <!-- PORTAL HERO HEADER -->
-                <div class="portal-hero-header" style="margin-bottom: 25px;">
+                <div class="portal-hero-header">
                     <span class="portal-top-badge">✨ Portal Akses Media Pembelajaran Interaktif</span>
                     <h1 class="portal-main-title">
                         Petualangan <span class="hero-highlight">Sistem Peredaran Darah</span>
@@ -115,14 +180,89 @@
                     <p class="portal-main-subtitle">
                         Media Pembelajaran Sains IPA Kelas VI SD Kurikulum Merdeka Berbasis Digital 3D Simulation & Problem-Based Learning (PBL).
                     </p>
+                    <div>
+                        <span class="portal-instruction-pill">👇 Silakan pilih masuk sebagai <strong>Siswa</strong> atau <strong>Guru</strong> untuk memulai:</span>
+                    </div>
                 </div>
 
-                <!-- TOMBOL BESAR MULAI JELAJAHI -->
-                <div class="portal-explore-cta" style="display: flex; justify-content: center; margin-top: 10px;">
-                    <button class="btn-cta-main" style="padding: 16px 44px; font-size: 1.22rem; font-weight: 800; border-radius: var(--radius-full); box-shadow: 0 12px 32px rgba(255, 0, 84, 0.4); display: inline-flex; align-items: center; gap: 12px; transform: scale(1); transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" onclick="navigateTo('view-beranda')">
-                        <span>🚀 Mulai Jelajahi</span>
-                        <svg class="nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 22px; height: 22px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
+                <!-- DUA KARTU PILIHAN LOGIN: SISWA & GURU -->
+                <div class="portal-roles-grid">
+                    
+                    <!-- KARTU 1: MASUK SEBAGAI SISWA -->
+                    <div class="portal-role-card role-student">
+                        <div class="portal-card-top">
+                            <div class="portal-icon-box student-icon-glow">🎒</div>
+                            <div>
+                                <span class="portal-card-badge badge-student">PESERTA DIDIK KELAS VI</span>
+                                <h2 class="portal-card-title">Masuk Sebagai Siswa</h2>
+                            </div>
+                        </div>
+                        <p class="portal-card-desc">
+                            Masukkan nama & kelasmu untuk mulai petualangan 3D, coba mikroskop darah, selesaikan kuis alur sirkulasi, dan raih sertifikat prestasimu!
+                        </p>
+
+                        <form class="portal-form" onsubmit="event.preventDefault(); window.authMgr.loginAsStudentFromPortal();">
+                            <div class="portal-input-group">
+                                <label for="portal-student-name">
+                                    <span>👤</span> Nama Lengkap Siswa:
+                                </label>
+                                <input type="text" id="portal-student-name" class="portal-input" placeholder="Tuliskan nama lengkapmu di sini..." required autocomplete="name">
+                            </div>
+
+                            <div class="portal-input-group">
+                                <label for="portal-student-class">
+                                    <span>🏫</span> Pilih Kelas:
+                                </label>
+                                <select id="portal-student-class" class="portal-select">
+                                    <option value="Kelas VI-A">Kelas VI-A</option>
+                                    <option value="Kelas VI-B">Kelas VI-B</option>
+                                    <option value="Kelas VI-C">Kelas VI-C</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn-portal-action btn-student-action">
+                                <span>🚀 Mulai Belajar Sekarang ➔</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- KARTU 2: LOGIN SEBAGAI GURU -->
+                    <div class="portal-role-card role-teacher">
+                        <div class="portal-card-top">
+                            <div class="portal-icon-box teacher-icon-glow">👩‍🏫</div>
+                            <div>
+                                <span class="portal-card-badge badge-teacher">PENDIDIK & FASILITATOR</span>
+                                <h2 class="portal-card-title">Login Sebagai Guru</h2>
+                            </div>
+                        </div>
+                        <p class="portal-card-desc">
+                            Akses khusus Guru untuk memantau kehadiran siswa, data nilai kuis & asesmen PBL secara real-time, sinkronisasi Google Sheets, dan cetak rapor kelas.
+                        </p>
+
+                        <form class="portal-form" onsubmit="event.preventDefault(); window.authMgr.loginAsTeacherFromPortal();">
+                            <div class="portal-input-group">
+                                <label for="portal-teacher-username">
+                                    <span>🆔</span> Username Guru:
+                                </label>
+                                <input type="text" id="portal-teacher-username" class="portal-input" placeholder="Masukkan username guru..." required autocomplete="username">
+                            </div>
+
+                            <div class="portal-input-group">
+                                <label for="portal-teacher-password">
+                                    <span>🔒</span> Password:
+                                </label>
+                                <div class="portal-pass-wrap">
+                                    <input type="password" id="portal-teacher-password" class="portal-input" placeholder="Masukkan password..." required autocomplete="current-password">
+                                    <button type="button" class="portal-toggle-pass-btn" onclick="window.authMgr.togglePortalPasswordVisibility()" title="Lihat/Sembunyikan Password">👁️</button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-portal-action btn-teacher-action">
+                                <span>🔑 Masuk Dashboard Guru ➔</span>
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
 
             </div>
@@ -946,16 +1086,16 @@
                         <div class="account-details-grid">
                             <div class="acc-field-item">
                                 <label>Nama Lengkap</label>
-                                <div class="acc-val-box"><strong>Meisya Ranny</strong></div>
+                                <div class="acc-val-box"><strong>Ibu Meisya (Guru)</strong></div>
                             </div>
                             <div class="acc-field-item">
                                 <label>Username (ID Login)</label>
-                                <div class="acc-val-box"><code>meisyaranny</code></div>
+                                <div class="acc-val-box"><code>emey</code></div>
                             </div>
                             <div class="acc-field-item">
                                 <label>Password Terdaftar</label>
                                 <div class="acc-val-box pass-box">
-                                    <span id="account-display-pass">emeeii123</span>
+                                    <span id="account-display-pass">••••••••</span>
                                     <span class="badge-tag-verified">Terlindungi</span>
                                 </div>
                             </div>
@@ -1074,7 +1214,7 @@
                         <div class="login-input-wrap">
                             <span class="input-icon">👤</span>
                             <input type="text" id="auth-input-username" class="login-input"
-                                placeholder="Contoh: meisyaranny" required autocomplete="username">
+                                placeholder="Masukkan username guru..." required autocomplete="username">
                         </div>
                     </div>
 
@@ -1088,18 +1228,6 @@
                                 onclick="window.authMgr.togglePasswordVisibility()"
                                 title="Lihat/Sembunyikan Password">👁️</button>
                         </div>
-                    </div>
-
-                    <!-- DEMO HELPER BOX -->
-                    <div class="login-demo-helper">
-                        <div class="helper-info">
-                            <span class="helper-title">💡 Akun Guru Terdaftar:</span>
-                            <span class="helper-creds">User: <strong>meisyaranny</strong> | Pass:
-                                <strong>emeeii123</strong></span>
-                        </div>
-                        <button type="button" class="btn-fill-demo" onclick="window.authMgr.fillDemoCredentials()">
-                            ⚡ Isi Otomatis
-                        </button>
                     </div>
 
                     <button type="submit" class="btn-cta-main btn-submit-login">

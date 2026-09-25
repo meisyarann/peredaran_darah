@@ -8,13 +8,13 @@
 class AuthManager {
   constructor() {
     this.validCredentials = {
-      username: 'meisyaranny',
-      password: 'emeeii123',
-      name: 'Meisya Ranny',
+      username: 'emey',
+      password: 'emey123',
+      name: 'Ibu Meisya (Guru)',
       role: 'Guru Pengajar',
       school: 'SD Kelas VI • IPA Kurikulum Merdeka',
       avatar: '👩‍🏫',
-      email: 'meisyaranny@sekolah.id'
+      email: 'emey@sekolah.id'
     };
 
     this.storageKey = 'hemoexplorer_auth_user';
@@ -800,10 +800,10 @@ class DashboardManager {
           <div class="lock-icon">🔒</div>
           <div class="lock-text">
             <h3>Akses Terbatas: Silakan Login Terlebih Dahulu</h3>
-            <p>Halaman Dashboard khusus untuk akun <strong>Meisya Ranny</strong> (username: <code>meisyaranny</code>, password: <code>emeeii123</code>).</p>
+            <p>Halaman Dashboard khusus untuk akun Pengajar/Guru. Silakan masuk menggunakan akun Guru Anda.</p>
           </div>
           <button class="btn-cta-main" onclick="window.authMgr.openLoginModal()">
-            <span>🔑 Masuk Sekarang</span>
+            <span>🔑 Masuk Akun Guru</span>
           </button>
         </div>
       `;
