@@ -35,7 +35,6 @@
         <div class="brand-text">
           <div class="brand-title-row">
             <span class="brand-title">HemoExplorer</span>
-            <span class="brand-tag">Kelas VI SD</span>
           </div>
           <span class="brand-subtitle">Sistem Peredaran Darah</span>
         </div>
@@ -238,17 +237,6 @@
             </div>
           </div>
 
-          <!-- Card Game Arcade -->
-          <div class="module-nav-card" style="--card-accent: #ff0054;" onclick="navigateTo('view-game')">
-            <div>
-              <div class="module-card-icon">🎮</div>
-              <h3>Game HemoArcade</h3>
-              <p>Petualangan seru kendalikan sel darah merah menyusuri pembuluh darah, kumpulkan oksigen O₂, dan basmi kuman!</p>
-            </div>
-            <div class="module-card-footer">
-              <span>Mainkan Game ➔</span>
-            </div>
-          </div>
 
           <!-- Card 5 -->
           <div class="module-nav-card" style="--card-accent: #8338ec;" onclick="navigateTo('view-pbl')">
@@ -585,240 +573,6 @@
       </div>
     </section>
 
-    <!-- ========================================================================= -->
-    <!-- 5.5 HALAMAN GAME ARCADE EDUKASI (HEMORUNNER & IMMUNE DEFENSE) -->
-    <!-- ========================================================================= -->
-    <section id="view-game" class="app-view-section">
-      <div class="section-header">
-        <div class="section-badge">🎮 Arena Game Edukasi Interaktif</div>
-        <h2>Zona Game HemoArcade</h2>
-        <p>Kendalikan sel darah, susuri aliran pembuluh darah, kumpulkan Oksigen O₂, dan basmi bakteri jahat!</p>
-      </div>
-
-      <div class="game-arena-wrapper">
-        <!-- MODE SELECTOR PILLS -->
-        <div class="game-mode-selector">
-          <button class="game-mode-pill active" data-game-mode="runner" onclick="if(window.hemoGame) window.hemoGame.setGameMode('runner');">
-            <span>🏃 1. HemoRunner (Ekspedisi Darah)</span>
-          </button>
-          <button class="game-mode-pill mode-leukosit" data-game-mode="defense" onclick="if(window.hemoGame) window.hemoGame.setGameMode('defense');">
-            <span>🛡️ 2. Pahlawan Leukosit (Immune Defense)</span>
-          </button>
-        </div>
-
-        <!-- TOP HUD METRICS BAR -->
-        <div class="game-hud-bar">
-          <div class="hud-stat-box">
-            <span class="hud-stat-icon anim-heart-pulse">❤️</span>
-            <div class="hud-stat-info">
-              <span class="hud-stat-label">Nyawa Jantung</span>
-              <span id="game-hud-lives" class="hud-stat-val">❤️❤️❤️</span>
-            </div>
-          </div>
-
-          <div class="hud-stat-box">
-            <span class="hud-stat-icon">⭐</span>
-            <div class="hud-stat-info">
-              <span class="hud-stat-label">Skor Belajar</span>
-              <span id="game-hud-score" class="hud-stat-val highlight-score">0</span>
-            </div>
-          </div>
-
-          <div class="hud-stat-box">
-            <span class="hud-stat-icon">🔵</span>
-            <div class="hud-stat-info">
-              <span class="hud-stat-label">Oksigen (O₂)</span>
-              <span id="game-hud-oxygen" class="hud-stat-val highlight-oxy">100%</span>
-            </div>
-          </div>
-
-          <div class="hud-stat-box">
-            <span class="hud-stat-icon">🏅</span>
-            <div class="hud-stat-info">
-              <span class="hud-stat-label">Tingkat / Sirkulasi</span>
-              <span id="game-hud-level" class="hud-stat-val">Tingkat 1</span>
-            </div>
-          </div>
-
-          <div class="hud-stat-box">
-            <span class="hud-stat-icon">👑</span>
-            <div class="hud-stat-info">
-              <span class="hud-stat-label">Rekor Tertinggi</span>
-              <span id="game-hud-high" class="hud-stat-val">0</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- GAME CANVAS VIEWPORT -->
-        <div class="game-canvas-container">
-          <canvas id="hemo-game-canvas"></canvas>
-
-          <!-- SCREEN: START -->
-          <div id="game-screen-start" class="game-overlay-screen">
-            <div class="game-overlay-card">
-              <div class="game-overlay-icon">🩺🚀</div>
-              <h3 class="game-overlay-title">Siap Memulai Petualangan?</h3>
-              <p class="game-overlay-desc">
-                Bantu <strong>Dr. Hemi</strong> berenang di dalam aliran darah! Ambil gas Oksigen (O₂) dan Nutrisi, hindari plak kolesterol, dan aktifkan perisai Leukosit untuk membasmi kuman!
-              </p>
-              
-              <div class="game-edu-tip-box">
-                <strong>💡 Tahukah Kamu?</strong>
-                <span class="game-edu-tip-text">Sel darah merah mengalir mengantarkan oksigen dari paru-paru ke seluruh sel di tubuhmu!</span>
-              </div>
-
-              <div class="game-btn-group">
-                <button class="btn-game-action btn-game-primary" onclick="if(window.hemoGame) window.hemoGame.start();">
-                  <span>🚀 Mulai Main Sekarang!</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- SCREEN: PAUSE -->
-          <div id="game-screen-pause" class="game-overlay-screen" style="display: none;">
-            <div class="game-overlay-card">
-              <div class="game-overlay-icon">⏸️</div>
-              <h3 class="game-overlay-title">Permainan Dijeda</h3>
-              <p class="game-overlay-desc">Tarik napas sejenak, rilekskan tanganmu, dan lanjutkan ekspedisi!</p>
-              <div class="game-btn-group">
-                <button class="btn-game-action btn-game-primary" onclick="if(window.hemoGame) window.hemoGame.pause();">
-                  <span>▶️ Lanjutkan</span>
-                </button>
-                <button class="btn-game-action btn-game-secondary" onclick="if(window.hemoGame) window.hemoGame.start();">
-                  <span>🔄 Ulangi Dari Awal</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- SCREEN: GAME OVER -->
-          <div id="game-screen-gameover" class="game-overlay-screen" style="display: none;">
-            <div class="game-overlay-card">
-              <div class="game-overlay-icon">💔</div>
-              <h3 class="game-overlay-title" style="background: linear-gradient(135deg, #ff4d6d, #ffbe0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Petualangan Berakhir!</h3>
-              <p class="game-overlay-desc">
-                Skor Akhir Kamu: <strong class="game-final-score-val" style="font-size: 1.5rem; color: #ffbe0b;">0</strong> Poin
-              </p>
-
-              <div class="game-edu-tip-box">
-                <strong>🩺 Info Dokter Cilik:</strong>
-                <span class="game-edu-tip-text">Jaga pembuluh darahmu tetap bersih dengan rajin berolahraga dan makan makanan bergizi!</span>
-              </div>
-
-              <div class="game-btn-group">
-                <button class="btn-game-action btn-game-primary" onclick="if(window.hemoGame) window.hemoGame.start();">
-                  <span>🔄 Coba Lagi & Pecahkan Rekor!</span>
-                </button>
-                <button class="btn-game-action btn-game-secondary" onclick="navigateTo('view-beranda');">
-                  <span>🏠 Kembali ke Beranda</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- SCREEN: VICTORY -->
-          <div id="game-screen-victory" class="game-overlay-screen" style="display: none;">
-            <div class="game-overlay-card">
-              <div class="game-overlay-icon">🏆✨</div>
-              <h3 class="game-overlay-title" style="background: linear-gradient(135deg, #06d6a0, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Selamat! Ekspedisi Berhasil!</h3>
-              <p class="game-overlay-desc">
-                Hebat sekali! Kamu berhasil menyelesaikan semua sirkulasi peredaran darah dengan skor luar biasa: <strong class="game-final-score-val" style="font-size: 1.5rem; color: #06d6a0;">0</strong> Poin!
-              </p>
-
-              <div class="game-edu-tip-box">
-                <strong>🌟 Prestasi Pahlawan Sirkulasi:</strong>
-                <span>Seluruh sel tubuhmu kini kaya akan oksigen dan bebas dari kuman penyakit!</span>
-              </div>
-
-              <div class="game-btn-group">
-                <button class="btn-game-action btn-game-primary" onclick="if(window.hemoGame) window.hemoGame.start();">
-                  <span>🎮 Mainkan Lagi</span>
-                </button>
-                <button class="btn-game-action btn-game-secondary" onclick="navigateTo('view-quiz');">
-                  <span>🏆 Lanjut ke Latihan Alur</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ON-SCREEN VIRTUAL TOUCHPAD CONTROLS -->
-        <div class="game-touch-controls">
-          <div class="touch-dpad-wrap">
-            <button id="btn-touch-up" class="touch-btn" title="Atas">⬆️</button>
-            <button id="btn-touch-down" class="touch-btn" title="Bawah">⬇️</button>
-            <button id="btn-touch-left" class="touch-btn" title="Mundur">⬅️</button>
-            <button id="btn-touch-right" class="touch-btn" title="Maju">➡️</button>
-          </div>
-
-          <div class="touch-actions-wrap">
-            <button id="btn-touch-action" class="touch-btn-action btn-shield-action" title="Aksi / Perisai">
-              <span>🛡️ Aktifkan Leukosit</span>
-            </button>
-            <button class="touch-btn" style="width: auto; padding: 0 16px; font-size: 0.95rem;" onclick="if(window.hemoGame) window.hemoGame.pause();" title="Jeda Permainan">
-              ⏸️
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- GAME ITEM LEGEND & LEADERBOARD -->
-      <div class="game-bottom-grid">
-        <!-- Panel 1: Panduan Item & Musuh -->
-        <div class="game-card-panel">
-          <h3>📖 Panduan Simbol & Objek Game</h3>
-          <div class="game-item-legend-list">
-            <div class="legend-item-row">
-              <div class="legend-item-avatar">🔵</div>
-              <div class="legend-item-desc">
-                <strong>Gas Oksigen (O₂):</strong> Memberi +100 Poin & mengisi tabung oksigen untuk bertahan hidup.
-              </div>
-            </div>
-            <div class="legend-item-row">
-              <div class="legend-item-avatar">🍎</div>
-              <div class="legend-item-desc">
-                <strong>Nutrisi / Glukosa:</strong> Memberi +50 Poin & berpeluang memulihkan +1 Nyawa Jantung.
-              </div>
-            </div>
-            <div class="legend-item-row">
-              <div class="legend-item-avatar">🛡️</div>
-              <div class="legend-item-desc">
-                <strong>Perisai Leukosit:</strong> Memberikan kekebalan super untuk menabrak rintangan & membasmi kuman!
-              </div>
-            </div>
-            <div class="legend-item-row">
-              <div class="legend-item-avatar">🟡</div>
-              <div class="legend-item-desc">
-                <strong>Plak Kolesterol:</strong> Rintangan pembuluh darah. Hindari agar tidak mengurangi nyawa!
-              </div>
-            </div>
-            <div class="legend-item-row">
-              <div class="legend-item-avatar">🦠</div>
-              <div class="legend-item-desc">
-                <strong>Bakteri Patogen:</strong> Kuman berbahaya yang bergerak. Basmi dengan perisai atau tembakan antibodi!
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Panel 2: Papan Skor Juara (Leaderboard) -->
-        <div class="game-card-panel">
-          <h3>🏆 Papan Skor Pahlawan Darah</h3>
-          <div class="high-score-list" id="game-high-score-list">
-            <!-- Rendered dynamically by game-arcade.js -->
-          </div>
-
-          <div style="margin-top: 18px; padding: 12px; background: rgba(58, 134, 255, 0.08); border-radius: 12px; border: 1px dashed var(--cardiac-blue); font-size: 0.85rem; color: var(--text-muted);">
-            💡 <strong>Petunjuk Kontrol:</strong>
-            <ul style="margin-left: 18px; margin-top: 4px;">
-              <li><strong>PC / Laptop:</strong> Gunakan tombol Panah (↑ ↓ ← →) atau W/A/S/D untuk bergerak, dan [SPASI] untuk mengaktifkan Perisai / Menembak.</li>
-              <li><strong>Ponsel / Tablet:</strong> Gunakan tombol sentuh di bawah layar atau ketuk langsung area permainan.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ========================================================================= -->
     <!-- 6. HALAMAN ASESMEN PROBLEM-BASED LEARNING (PBL) -->
@@ -1288,7 +1042,6 @@
   <script src="js/audio-manager.js"></script>
   <script src="js/three-simulation.js"></script>
   <script src="js/quiz-engine.js"></script>
-  <script src="js/game-arcade.js"></script>
   <script src="js/pbl-assessment.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/auth-dashboard.js"></script>

@@ -878,11 +878,11 @@ class DashboardManager {
         </div>
 
         <div class="dash-kpi-card card-kpi-3">
-          <div class="kpi-icon-badge">🎮</div>
+          <div class="kpi-icon-badge">⭐</div>
           <div class="kpi-info">
-            <span class="kpi-label">Game HemoArcade</span>
-            <h3 class="kpi-value">${parseInt(localStorage.getItem('hemo_game_high_score') || '0', 10)} <small>Poin</small></h3>
-            <span class="kpi-subtext">Pahlawan Sirkulasi Darah</span>
+            <span class="kpi-label">Rata-Rata Nilai Kuis</span>
+            <h3 class="kpi-value">${Math.round(roster.reduce((acc, s) => acc + ((s.mudah || 0) + (s.sedang || 0) + (s.sulit || 0)) / 3, 0) / Math.max(1, roster.length))} <small>/ 100</small></h3>
+            <span class="kpi-subtext">Akumulasi 3 Tingkat Kuis</span>
           </div>
         </div>
 
