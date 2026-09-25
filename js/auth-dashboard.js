@@ -91,10 +91,25 @@ class AuthManager {
       this.updateUI();
 
       if (window.navigateTo) {
-        window.navigateTo('view-beranda');
+        window.navigateTo('view-portal');
       }
 
       this.showToast('👋 Anda telah keluar dari Akun Guru.', 'info');
+    }
+  }
+
+  logoutStudent() {
+    if (confirm('Apakah Anda ingin keluar / mengganti sesi siswa?')) {
+      if (window.audioMgr) window.audioMgr.playClickSound();
+      this.currentStudent = null;
+      localStorage.removeItem(this.studentStorageKey);
+      this.updateUI();
+
+      if (window.navigateTo) {
+        window.navigateTo('view-portal');
+      }
+
+      this.showToast('👋 Sesi siswa telah diakhiri.', 'info');
     }
   }
 
@@ -530,9 +545,12 @@ class AuthManager {
               <h3>Selamat Datang, Ibu ${this.currentUser.name}!</h3>
               <p>Kelola analitik siswa, buku nilai kelas VI, dan cetak sertifikat resmi di Dashboard Pengajar.</p>
             </div>
-            <div class="shortcut-action">
+            <div class="shortcut-action" style="display: flex; gap: 10px; flex-wrap: wrap;">
               <button class="btn-cta-main" onclick="navigateTo('view-dashboard')">
                 <span>🚀 Buka Dashboard Guru</span>
+              </button>
+              <button class="btn-cta-secondary" onclick="window.authMgr.logout()" style="font-size: 0.88rem;">
+                🚪 Keluar Guru
               </button>
             </div>
           </div>
@@ -549,8 +567,8 @@ class AuthManager {
               <button class="btn-cta-main" onclick="navigateTo('view-quiz')">
                 <span>🏆 Mulai Kuis Prestasi</span>
               </button>
-              <button class="btn-cta-secondary" onclick="window.authMgr.openStudentModal()" style="font-size: 0.88rem;">
-                ✏️ Ubah Nama
+              <button class="btn-cta-secondary" onclick="window.authMgr.logoutStudent()" style="font-size: 0.88rem;">
+                🔄 Ganti / Keluar Siswa
               </button>
             </div>
           </div>
@@ -561,14 +579,11 @@ class AuthManager {
             <div class="shortcut-info">
               <span class="badge-tag-red">🎒 Untuk Siswa & Guru</span>
               <h3>Mulai Belajar Sistem Peredaran Darah</h3>
-              <p><strong>Siswa:</strong> Masukkan nama & kelasmu untuk mencatat progres dan sertifikat. <br><strong>Guru:</strong> Login untuk mengakses Dashboard Analitik & Rekap Nilai.</p>
+              <p>Pilih masuk sebagai Siswa untuk mencatat progres & sertifikat, atau Guru untuk mengelola Dashboard Buku Nilai.</p>
             </div>
             <div class="shortcut-action" style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button class="btn-cta-main" style="background: linear-gradient(135deg, #3a86ff, #2563eb);" onclick="window.authMgr.openStudentModal()">
-                <span>🎒 Masuk Siswa</span>
-              </button>
-              <button class="btn-cta-secondary" onclick="window.authMgr.openLoginModal()">
-                <span>👩‍🏫 Login Guru</span>
+              <button class="btn-cta-main" style="background: linear-gradient(135deg, #3a86ff, #2563eb);" onclick="navigateTo('view-portal')">
+                <span>🚀 Pilih Masuk Siswa / Guru</span>
               </button>
             </div>
           </div>
